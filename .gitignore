@@ -75,6 +75,8 @@ docs/_build/
 .pybuilder/
 target/
 
+.chroma/
+
 # Jupyter Notebook
 .ipynb_checkpoints
 

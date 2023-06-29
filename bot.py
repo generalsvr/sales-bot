@@ -6,6 +6,7 @@ from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from prompts import SYSTEM_PROMPT
+from embeddings import search
 from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
@@ -18,20 +19,37 @@ from langchain.memory import ConversationBufferMemory
 
 bot = Bot(token="5828347904:AAFP4uv7X1mkRWC4bamYL-ezGQswnyO2hNk")
 dp = Dispatcher(bot, storage=MemoryStorage())
-
 MODEL = "gpt-4" # gpt-3.5-turbo 
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
     CHAT = State()
 
-@dp.message_handler(Command('start'))
+@dp.message_handler(Command('agents'), state="*")
+async def agents_handler(message: types.Message):
+    agents = ["Agent 1", "Agent 2", "Agent 3"]
+    keyboard = types.InlineKeyboardMarkup()
+    buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
+    keyboard.add(*buttons)
+    await bot.send_message(message.chat.id, "Choose an agent:", reply_markup=keyboard)
+
+@dp.message_handler(Command('settings'), state="*")
+async def settings_handler(message: types.Message):
+    keyboard = types.InlineKeyboardMarkup()
+    buttons = [
+        types.InlineKeyboardButton("RU", callback_data="russian"),
+        types.InlineKeyboardButton("EN", callback_data="english")
+    ]
+    keyboard.add(*buttons)
+    await message.answer("Choose a language:", reply_markup=keyboard)
+
+@dp.message_handler(Command('start'), state="*")
 async def start_command(message: types.Message, state: FSMContext):
     await StateMachine.MAIN_MENU.set()
     await state.update_data(chat_memory=None)
     await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/agents - Choose an agent\n/settings - Choose a language", parse_mode="Markdown")
 
-@dp.message_handler(Command('new'))
+@dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
 
     await StateMachine.CHAT.set()
@@ -62,11 +80,6 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     await bot.edit_message_text(response, message.chat.id, message.message_id)
 
 
-@dp.message_handler(lambda message: message.text, state=StateMachine.MAIN_MENU)
-async def conversation_handler(message: types.Message, state: FSMContext):
-    await message.answer("Please use /new command to start a new conversation.")
-
-
 @dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
 async def conversation_handler(message: types.Message, state: FSMContext):
 
@@ -75,7 +88,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             SYSTEM_PROMPT
         ),
         SystemMessagePromptTemplate.from_template(
-            f"Your customer name is {message.from_user.first_name}."
+            f"Knowledge base search results:\n{search(message.text)}"
         ),
         MessagesPlaceholder(variable_name="history"),
         HumanMessagePromptTemplate.from_template("{input}")
@@ -99,25 +112,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=memory)
     await message.answer(response)
 
-@dp.message_handler(Command('agents'))
-async def agents_handler(message: types.Message):
-    agents = ["Agent 1", "Agent 2", "Agent 3"]
-    keyboard = types.InlineKeyboardMarkup()
-    buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
-    keyboard.add(*buttons)
-    await bot.send_message(message.chat.id, "Choose an agent:", reply_markup=keyboard)
-
-@dp.message_handler(Command('settings'))
-async def settings_handler(message: types.Message):
-    keyboard = types.InlineKeyboardMarkup()
-    buttons = [
-        types.InlineKeyboardButton("RU", callback_data="russian"),
-        types.InlineKeyboardButton("EN", callback_data="english")
-    ]
-    keyboard.add(*buttons)
-    await message.answer("Choose a language:", reply_markup=keyboard)
-
-@dp.callback_query_handler(lambda c: c.data in ["russian", "english"])
+@dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
     lang = callback_query.data
     await state.update_data(language=lang)
