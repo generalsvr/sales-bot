@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  telegram-bot:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OPENAI_API_KEY=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
+    command: python bot.py
