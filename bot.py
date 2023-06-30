@@ -5,7 +5,8 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
-from prompts import SYSTEM_PROMPT, INIT_MSG
+from prompts import SYSTEM_PROMPT, INIT_MSG, INIT_MSG_LLAMA, SYSTEM_PROMPT_LLAMA
+from llama import load_llama
 from embeddings import search
 from langchain.prompts import (
     ChatPromptTemplate,
@@ -17,9 +18,12 @@ from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
-bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040")
+
+bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
+# bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
+
 dp = Dispatcher(bot, storage=MemoryStorage())
-MODEL = "gpt-4" # gpt-3.5-turbo 
+MODEL = "llama" # gpt-3.5-turbo 
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
@@ -91,7 +95,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
             INIT_MSG
         ),
         SystemMessagePromptTemplate.from_template(
-            f"Your customer name is {message.from_user.first_name}. Initiate conversation in {lang}. Remember that you need to sell a product to the customer."
+            f"Customer name is {message.from_user.first_name}. Initiate conversation in {lang}. Remember that you need to sell a product to the customer."
         ),
         MessagesPlaceholder(variable_name="history"),
         HumanMessagePromptTemplate.from_template("{input}")
@@ -103,10 +107,12 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
     elif agent == "Advanced":
         llm = ChatOpenAI(temperature=0.3, model="gpt-4")
+    elif agent == "Llama":
+        llm = load_llama()
 
     memory = ConversationBufferMemory(return_messages=True)
     conversation = ConversationChain(memory=memory, prompt=prompt, llm=llm)
-    response = conversation.predict(input="")
+    response = conversation.predict(input="Conversation 2:")
     response = response.replace("M:", "")
 
     await state.update_data(chat_memory=memory)
