@@ -100,7 +100,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     print(prompt)
 
     if agent == "Basic":
-        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo-16k")
+        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
     elif agent == "Advanced":
         llm = ChatOpenAI(temperature=0.3, model="gpt-4")
 
@@ -141,7 +141,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     print(prompt)
 
     if agent == "Basic":
-        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo-16k")
+        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
     elif agent == "Advanced":
         llm = ChatOpenAI(temperature=0.3, model="gpt-4")
 
