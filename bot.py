@@ -45,7 +45,7 @@ async def agents_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(Command('style'), state="*")
 async def style_handler(message: types.Message, state: FSMContext):
-    agents = ["Formal", "Casual", "Friendy", "Assertive"]
+    agents = ["Formal", "Casual", "Friendly", "Assertive"]
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
     keyboard.add(*buttons)
@@ -239,7 +239,7 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
         await bot.edit_message_text(f"🤖 Агент изменен на {agent}", message.chat.id, message.message_id)
         
 
-@dp.callback_query_handler(lambda c: c.data in ["Formal", "Casual", "Friendy", "Assertive"], state="*")
+@dp.callback_query_handler(lambda c: c.data in ["Formal", "Casual", "Friendly", "Assertive"], state="*")
 async def process_callback_dialogue(callback_query: types.CallbackQuery, state: FSMContext):
     dialogue = callback_query.data
     await state.update_data(style=dialogue)
