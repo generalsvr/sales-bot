@@ -45,7 +45,7 @@ async def agents_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(Command('style'), state="*")
 async def style_handler(message: types.Message, state: FSMContext):
-    agents = ["Formal", "Informal"]
+    agents = ["Formal", "Casual", "Friendy", "Assertive"]
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
     keyboard.add(*buttons)
@@ -105,8 +105,12 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     if dialogue_style == "Formal":
         full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
-    elif dialogue_style == "Informal":
-        full_prompt = SYSTEM_PROMPT + INFORMAL_DIALOGUE
+    elif dialogue_style == "Casual":
+        full_prompt = SYSTEM_PROMPT + CASUAL_DIALOGUE
+    elif dialogue_style == "Friendly":
+        full_prompt = SYSTEM_PROMPT + FRIENDLY_DIALOGUE
+    elif dialogue_style == "Assertive":
+        full_prompt = SYSTEM_PROMPT + ASSERTIVE_DIALOGUE
 
 
     prompt = ChatPromptTemplate.from_messages([
@@ -153,8 +157,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     if dialogue_style == "Formal":
         full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
-    elif dialogue_style == "Informal":
-        full_prompt = SYSTEM_PROMPT + INFORMAL_DIALOGUE
+    elif dialogue_style == "Casual":
+        full_prompt = SYSTEM_PROMPT + CASUAL_DIALOGUE
+    elif dialogue_style == "Friendly":
+        full_prompt = SYSTEM_PROMPT + FRIENDLY_DIALOGUE
+    elif dialogue_style == "Assertive":
+        full_prompt = SYSTEM_PROMPT + ASSERTIVE_DIALOGUE
 
     if lang == "english":
         message__ = await message.answer("🌀 Bot is typing...")
@@ -231,7 +239,7 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
         await bot.edit_message_text(f"🤖 Агент изменен на {agent}", message.chat.id, message.message_id)
         
 
-@dp.callback_query_handler(lambda c: c.data in ["Formal", "Informal"], state="*")
+@dp.callback_query_handler(lambda c: c.data in ["Formal", "Casual", "Friendy", "Assertive"], state="*")
 async def process_callback_dialogue(callback_query: types.CallbackQuery, state: FSMContext):
     dialogue = callback_query.data
     await state.update_data(style=dialogue)
