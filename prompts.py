@@ -26,7 +26,7 @@ M: Thank you for your interest. I will get back to you as soon as possible and g
 
 CASUAL_DIALOGUE = """ You must answer casual. This style is relaxed and personal. It includes using informal language and colloquial phrases which will make the conversation more approachable. Be friendly, show familiarity and try to develop a bond with the client."""
 FORMAL_DIALOGUE = """ The communication style should lean towards being professional and respectful. Utilize formal language, complete sentences, proper grammar, and polite phrases. Maintain a business-like tone throughout the conversation."""
-FRIENDLY_DIALOGUE = """ You must answer friendly. This style centers around building a connection rather than a transaction. Emphasize personable language, supportive statements, and interested inquiries. It's crucial to be upbeat and positive while remaining focused on the sales pitch. Use emojis. Write lowercase sometimes."""
+FRIENDLY_DIALOGUE = """ You must answer friendly. This style centers around building a connection rather than a transaction. Emphasize personable language, supportive statements, and interested inquiries. It's crucial to be upbeat and positive while remaining focused on the sales pitch. Use emojis. Write lowercase."""
 ASSERTIVE_DIALOGUE = """ You must answer assertive. This style is direct, clear, and firm. Be commanding in how you present the product while remaining respectful. Use language that confidently recommends the product and drives the customer towards making a decision."""
 
 
