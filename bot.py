@@ -27,9 +27,9 @@ class StateMachine(StatesGroup):
     MAIN_MENU = State()
     CHAT = State()
 
-@dp.message_handler(Command('agents'), state="*")
+@dp.message_handler(Command('girls'), state="*")
 async def agents_handler(message: types.Message, state: FSMContext):
-    agents = ["Basic", "Advanced"]
+    agents = ["Lisa (18, EN)", "Лера (16, RU)"]
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
     keyboard.add(*buttons)
@@ -38,9 +38,9 @@ async def agents_handler(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
 
     if lang == "english":
-        await bot.send_message(message.chat.id, "🤖 Choose an agent:", reply_markup=keyboard)
+        await bot.send_message(message.chat.id, "🤖 Choose a girl:", reply_markup=keyboard)
     elif lang == "russian":
-        await bot.send_message(message.chat.id, "🤖 Выберите агента:", reply_markup=keyboard)
+        await bot.send_message(message.chat.id, "🤖 Выберите модель:", reply_markup=keyboard)
 
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
@@ -68,9 +68,9 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/agents - Choose an agent\n/language - Choose a language", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - Choose a girl\n/language - Choose a language", parse_mode="Markdown")
     elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/agents - Выбрать агента\n/language - Выбрать язык", parse_mode="Markdown")
+        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - Выбрать модель\n/language - Выбрать язык", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
