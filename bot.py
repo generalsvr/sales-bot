@@ -6,7 +6,6 @@ from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from prompts import *
-from llama import load_llama
 from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
