@@ -116,10 +116,10 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
-        SYSTEM_PROMPT = PORN_LLAMA_EN + message.text + "\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_EN + memory + message.text + "\nGirl:"
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
-        SYSTEM_PROMPT = PORN_LLAMA_RU + message.text + "\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_RU + memory +  message.text + "\nGirl:"
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
