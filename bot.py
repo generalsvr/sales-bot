@@ -15,12 +15,13 @@ from langchain.prompts import (
 )
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
+from llama_cpp import Llama
 
 
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
 dp = Dispatcher(bot, storage=MemoryStorage())
-LLAMA_GLOBAL = load_llama()
+LLAMA_GLOBAL = Llama(model_path="/guanaco-33B.ggmlv3.q4_K_M.bin", n_gpu_layers=63, seed=-1)
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
@@ -87,22 +88,24 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         full_prompt = PORN_LLAMA_RU
 
 
-    prompt = ChatPromptTemplate.from_messages([
-        SystemMessagePromptTemplate.from_template(
-            full_prompt
-        ),
-        MessagesPlaceholder(variable_name="history"),
-        HumanMessagePromptTemplate.from_template("{input}")
-    ])
+    # prompt = ChatPromptTemplate.from_messages([
+    #     SystemMessagePromptTemplate.from_template(
+    #         full_prompt
+    #     ),
+    #     MessagesPlaceholder(variable_name="history"),
+    #     HumanMessagePromptTemplate.from_template("{input}")
+    # ])
 
-    print(prompt)
+    # print(prompt)
 
-    memory = ConversationBufferMemory(return_messages=True)
-    conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
-    response = conversation.predict(input="Hi babe\n### Girl:")
-    response = response.replace("M:", "")
+    # memory = ConversationBufferMemory(return_messages=True)
+    # conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
+    # response = conversation.predict(input="Hi babe\n### Girl:")
+    # response = response.replace("M:", "")
 
-    await state.update_data(chat_memory=memory)
+    # await state.update_data(chat_memory=memory)
+
+    response = LLAMA_GLOBAL("Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: Hi babe### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4)
 
     # update message with new response
     await bot.edit_message_text(response, message__.chat.id, message__.message_id)
@@ -135,17 +138,20 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
     # get chat memory
-    memory = data.get("chat_memory")
-    if memory is None:
-        memory = ConversationBufferMemory(return_messages=True)
-    else:
-        print("Memory loaded", memory)
+    # memory = data.get("chat_memory")
+    # if memory is None:
+    #     memory = ConversationBufferMemory(return_messages=True)
+    # else:
+    #     print("Memory loaded", memory)
 
-    conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
-    response = conversation.predict(input=message.text)
-    response = response.replace("M:", "")
+    # conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
+    # response = conversation.predict(input=message.text)
+    # response = response.replace("M:", "")
 
-    await state.update_data(chat_memory=memory)
+    # await state.update_data(chat_memory=memory)
+
+    response = LLAMA_GLOBAL("Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: {message.text}### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4)
+
     await bot.edit_message_text(response, message__.chat.id, message__.message_id)
 
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
