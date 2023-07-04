@@ -78,14 +78,11 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     await StateMachine.CHAT.set()
     data = await state.get_data()
     lang = data.get("language", "english")
-    full_prompt = None
 
     if lang == "english":
         message__ = await message.answer("⚡️ Starting new conversation...")
-        full_prompt = PORN_LLAMA_EN
     elif lang == "russian":
         message__ = await message.answer("⚡️ Начинаю новый диалог...")
-        full_prompt = PORN_LLAMA_RU
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(b"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: Hi babe\nGirl:")
@@ -101,28 +98,6 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
-
-    # prompt = ChatPromptTemplate.from_messages([
-    #     SystemMessagePromptTemplate.from_template(
-    #         full_prompt
-    #     ),
-    #     MessagesPlaceholder(variable_name="history"),
-    #     HumanMessagePromptTemplate.from_template("{input}")
-    # ])
-
-    # print(prompt)
-
-    # memory = ConversationBufferMemory(return_messages=True)
-    # conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
-    # response = conversation.predict(input="Hi babe\nGirl:")
-    # response = response.replace("M:", "")
-
-    # await state.update_data(chat_memory=memory)
-
-    # response = LLAMA_GLOBAL.create_completion("Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: Hi babe\nGirl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4,stop=["User:", "\n"])['choices'][0]
-
-    # update message with new response
-
 @dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
 async def conversation_handler(message: types.Message, state: FSMContext):
 
@@ -130,41 +105,25 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
 
     if lang == "english":
-        message__ = await message.answer("🌀 Hoe is typing...")
-        full_prompt = PORN_LLAMA_EN
+        message__ = await message.answer("⚡️ Starting new conversation...")
     elif lang == "russian":
-        message__ = await message.answer("🌀 Малыха печатает...")
-        full_prompt = PORN_LLAMA_RU
+        message__ = await message.answer("⚡️ Начинаю новый диалог...")
 
-    prompt = ChatPromptTemplate.from_messages([
-        SystemMessagePromptTemplate.from_template(
-            full_prompt 
-        ),
-        MessagesPlaceholder(variable_name="history"),
-        HumanMessagePromptTemplate.from_template("{input}")
-    ])
+    prompt = f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}\nGirl:"
 
-    print(prompt)
+    buffer = []
+    tokens = LLAMA_GLOBAL.tokenize(bytes(prompt))
+    for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=1.0, repeat_penalty=1.1):
+        detok = LLAMA_GLOBAL.detokenize([token]).decode()
+        if detok == "\n":
+            print("FINISHED")
+            return
+        else:
+            buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
+            if len(buffer) % 3 == 0:
+                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
 
-    # get state data
-    data = await state.get_data()
-
-    # get chat memory
-    # memory = data.get("chat_memory")
-    # if memory is None:
-    #     memory = ConversationBufferMemory(return_messages=True)
-    # else:
-    #     print("Memory loaded", memory)
-
-    # conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
-    # response = conversation.predict(input=message.text)
-    # response = response.replace("M:", "")
-
-    # await state.update_data(chat_memory=memory)
-
-    response = LLAMA_GLOBAL.create_completion(f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}\nGirl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4, stop=["User:", "\n"])['choices'][0]
-
-    await bot.edit_message_text(response, message__.chat.id, message__.message_id)
+    await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
