@@ -7,7 +7,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from prompts import *
 from llama import load_llama
-from embeddings import search
 from langchain.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
@@ -15,7 +14,6 @@ from langchain.prompts import (
     HumanMessagePromptTemplate
 )
 from langchain.chains import ConversationChain
-from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 
