@@ -104,9 +104,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
 
     if lang == "english":
-        message__ = await message.answer("⚡️ Starting new conversation...")
+        message__ = await message.answer("💋 Hoe is typing...")
     elif lang == "russian":
-        message__ = await message.answer("⚡️ Начинаю новый диалог...")
+        message__ = await message.answer("💋 Шкура печатает...")
 
     prompt = f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}\nGirl:"
 
