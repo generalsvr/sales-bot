@@ -105,7 +105,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     # await state.update_data(chat_memory=memory)
 
-    response = LLAMA_GLOBAL("Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: Hi babe### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4)['choices'][0]
+    response = LLAMA_GLOBAL("Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: Hi babe### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4,stop=["### User:", "\n"])['choices'][0]
 
     # update message with new response
     await bot.edit_message_text(response, message__.chat.id, message__.message_id)
@@ -150,7 +150,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     # await state.update_data(chat_memory=memory)
 
-    response = LLAMA_GLOBAL(f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: {message.text}### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4)['choices'][0]
+    response = LLAMA_GLOBAL(f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\n### User: hey bitch\n### Girl: hey daddy, do you want to fuck me?\n### User: oh yeah\n### Girl: okay then, take off your clothes\n### User: i am jerking off! get on your knees\n### Girl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\n### User: {message.text}### Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4, stop=["### User:", "\n"])['choices'][0]
 
     await bot.edit_message_text(response, message__.chat.id, message__.message_id)
 
