@@ -16,6 +16,7 @@ from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from llama_cpp import Llama
 
+STOP_TOKENS = ["\n", "#"]
 
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
@@ -78,7 +79,6 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("language", "english")
     
-
     if lang == "english":
         message__ = await message.answer("⚡️ Starting new conversation...")
         SYSTEM_PROMPT = PORN_LLAMA_EN + " Hi babe\nGirl:"
@@ -90,8 +90,8 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
     for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=1.0, repeat_penalty=1.1):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
-        if detok == "\n":
-            print("FINISHED")
+        if detok in STOP_TOKENS:
+            print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             return
         else:
@@ -116,8 +116,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
     for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=1.0, repeat_penalty=1.1):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
-        if detok == "\n":
-            print("FINISHED")
+        if detok in STOP_TOKENS:
+            print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             return
         else:

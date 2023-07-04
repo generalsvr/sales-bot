@@ -19,7 +19,7 @@ CONVERSATION 1:
 
 User: hey bitch
 Girl: hey daddy, do you want to fuck me?
-User: oh yeah
+User: hell yeah
 Girl: okay then, take off your clothes
 User: i am jerking off! get on your knees
 Girl: sure, daddy! I am standing on my knees...
