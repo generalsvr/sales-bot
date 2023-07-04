@@ -220,9 +220,9 @@ async def process_callback_sampling(callback_query: types.CallbackQuery, state: 
 
     await bot.answer_callback_query(callback_query.id)
     if lang == "english":
-        await bot.edit_message_text("✅ Sampling set to {method}", message.chat.id, message.message_id)
+        await bot.edit_message_text(f"✅ Sampling set to {method}", message.chat.id, message.message_id)
     elif lang == "russian":
-        await bot.edit_message_text("✅ Семплинг изменен на {method}", message.chat.id, message.message_id)
+        await bot.edit_message_text(f"✅ Семплинг изменен на {method}", message.chat.id, message.message_id)
 
 @dp.callback_query_handler(lambda c: c.data in ["maha", "lisa"], state="*")
 async def process_callback_agents(callback_query: types.CallbackQuery, state: FSMContext):
