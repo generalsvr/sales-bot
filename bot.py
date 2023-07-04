@@ -194,6 +194,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
     await state.update_data(chat_memory=memory)
 
+
+@dp.message_handler(lambda message: message.text, state="*")
+async def conversation_handler_raw(message: types.Message, state: FSMContext):
+    await message.answer("🤖 Use /new command to start a new conversation")
+
+
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
     lang = callback_query.data
