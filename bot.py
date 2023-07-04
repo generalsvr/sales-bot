@@ -121,6 +121,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         message__ = await message.answer("💋 Шкура пишет...")
         SYSTEM_PROMPT = PORN_LLAMA_RU + memory +  message.text + "\nGirl:"
 
+    print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
+
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
     for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=0.4, repeat_penalty=1.1):
