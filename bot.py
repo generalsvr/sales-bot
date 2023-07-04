@@ -19,10 +19,10 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 
-bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
-# bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
-
+# bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
+bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
 dp = Dispatcher(bot, storage=MemoryStorage())
+LLAMA_GLOBAL = load_llama()
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
@@ -42,22 +42,6 @@ async def agents_handler(message: types.Message, state: FSMContext):
         await bot.send_message(message.chat.id, "🤖 Choose an agent:", reply_markup=keyboard)
     elif lang == "russian":
         await bot.send_message(message.chat.id, "🤖 Выберите агента:", reply_markup=keyboard)
-
-@dp.message_handler(Command('style'), state="*")
-async def style_handler(message: types.Message, state: FSMContext):
-    agents = ["Formal", "Casual", "Friendly", "Assertive"]
-    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-    buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
-    keyboard.add(*buttons)
-
-    data = await state.get_data()
-    lang = data.get("language", "english")
-
-    if lang == "english":
-        await bot.send_message(message.chat.id, "🤖 Choose a converstaion style:", reply_markup=keyboard)
-    elif lang == "russian":
-        await bot.send_message(message.chat.id, "🤖 Выберите стиль диалога:", reply_markup=keyboard)
-
 
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
@@ -85,9 +69,9 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/agents - Choose an agent\n/language - Choose a language\n/style - Choose dialogue style", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/agents - Choose an agent\n/language - Choose a language", parse_mode="Markdown")
     elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/agents - Выбрать агента\n/language - Выбрать язык\n/style - Выбрать стиль общения", parse_mode="Markdown")
+        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/agents - Выбрать агента\n/language - Выбрать язык", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
@@ -95,33 +79,19 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     await StateMachine.CHAT.set()
     data = await state.get_data()
     lang = data.get("language", "english")
-    agent = data.get("agent", "Basic")
-    dialogue_style = data.get("style", "Formal")
+    full_prompt = None
 
     if lang == "english":
         message__ = await message.answer("⚡️ Starting new conversation...")
+        full_prompt = PORN_LLAMA_EN
     elif lang == "russian":
         message__ = await message.answer("⚡️ Начинаю новый диалог...")
-
-    if dialogue_style == "Formal":
-        full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
-    elif dialogue_style == "Casual":
-        full_prompt = SYSTEM_PROMPT + CASUAL_DIALOGUE
-    elif dialogue_style == "Friendly":
-        full_prompt = SYSTEM_PROMPT + FRIENDLY_DIALOGUE
-    elif dialogue_style == "Assertive":
-        full_prompt = SYSTEM_PROMPT + ASSERTIVE_DIALOGUE
+        full_prompt = PORN_LLAMA_RU
 
 
     prompt = ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template(
             full_prompt
-        ),
-        SystemMessagePromptTemplate.from_template(
-            INIT_MSG
-        ),
-        SystemMessagePromptTemplate.from_template(
-            f"Customer name is {message.from_user.first_name}. Initiate conversation in {lang}. Remember that you need to sell a product to the customer."
         ),
         MessagesPlaceholder(variable_name="history"),
         HumanMessagePromptTemplate.from_template("{input}")
@@ -129,16 +99,9 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     print(prompt)
 
-    if agent == "Basic":
-        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
-    elif agent == "Advanced":
-        llm = ChatOpenAI(temperature=0.3, model="gpt-4")
-    elif agent == "Llama":
-        llm = load_llama()
-
     memory = ConversationBufferMemory(return_messages=True)
-    conversation = ConversationChain(memory=memory, prompt=prompt, llm=llm)
-    response = conversation.predict(input="Write first message to customer:")
+    conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
+    response = conversation.predict(input="### User: Hi babe")
     response = response.replace("M:", "")
 
     await state.update_data(chat_memory=memory)
@@ -152,42 +115,23 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     data = await state.get_data()
     lang = data.get("language", "english")
-    agent = data.get("agent", "Basic")
-    dialogue_style = data.get("style", "Formal")
-
-    if dialogue_style == "Formal":
-        full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
-    elif dialogue_style == "Casual":
-        full_prompt = SYSTEM_PROMPT + CASUAL_DIALOGUE
-    elif dialogue_style == "Friendly":
-        full_prompt = SYSTEM_PROMPT + FRIENDLY_DIALOGUE
-    elif dialogue_style == "Assertive":
-        full_prompt = SYSTEM_PROMPT + ASSERTIVE_DIALOGUE
 
     if lang == "english":
-        message__ = await message.answer("🌀 Bot is typing...")
+        message__ = await message.answer("🌀 Hoe is typing...")
+        full_prompt = PORN_LLAMA_EN
     elif lang == "russian":
-        message__ = await message.answer("🌀 Бот печатает...")
+        message__ = await message.answer("🌀 Малыха печатает...")
+        full_prompt = PORN_LLAMA_RU
 
     prompt = ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template(
             full_prompt 
-        ),
-        SystemMessagePromptTemplate.from_template(
-            f"Knowledge base search results:\n{search(message.text)}"
         ),
         MessagesPlaceholder(variable_name="history"),
         HumanMessagePromptTemplate.from_template("{input}")
     ])
 
     print(prompt)
-
-    if agent == "Basic":
-        llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
-    elif agent == "Advanced":
-        llm = ChatOpenAI(temperature=0.3, model="gpt-4")
-    elif agent == "Llama":
-        llm = load_llama()
 
     # get state data
     data = await state.get_data()
@@ -199,7 +143,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     else:
         print("Memory loaded", memory)
 
-    conversation = ConversationChain(memory=memory, prompt=prompt, llm=llm)
+    conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
     response = conversation.predict(input=message.text)
     response = response.replace("M:", "")
 
@@ -238,23 +182,6 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
     elif lang == "russian":
         await bot.edit_message_text(f"🤖 Агент изменен на {agent}", message.chat.id, message.message_id)
         
-
-@dp.callback_query_handler(lambda c: c.data in ["Formal", "Casual", "Friendly", "Assertive"], state="*")
-async def process_callback_dialogue(callback_query: types.CallbackQuery, state: FSMContext):
-    dialogue = callback_query.data
-    await state.update_data(style=dialogue)
-
-    message = callback_query.message
-
-    data = await state.get_data()
-    lang = data.get("language", "english")
-
-    await bot.answer_callback_query(callback_query.id)
-    if lang == "english":
-        await bot.edit_message_text(f"🗣 Style set to {dialogue}", message.chat.id, message.message_id)
-    elif lang == "russian":
-        await bot.edit_message_text(f"🗣 Стиль изменен на {dialogue}", message.chat.id, message.message_id)
-
 if __name__ == '__main__':
     from aiogram import executor
     executor.start_polling(dp)
