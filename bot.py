@@ -80,7 +80,7 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe\n/language - choose a language\n/sampling - choose top_k or mirostat sampling", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe\n/language - choose a language\n/sampling - choose topk or mirostat sampling", parse_mode="Markdown")
     elif lang == "russian":
         await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель\n/language - выбрать язык\n/sampling - выбрать top_k или mirostat sampling", parse_mode="Markdown")
 
