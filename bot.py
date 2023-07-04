@@ -88,6 +88,11 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         full_prompt = PORN_LLAMA_RU
 
 
+    tokens = LLAMA_GLOBAL.tokenize(b"Hello, world!")
+    for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=1.0, repeat_penalty=1.1):
+        print(LLAMA_GLOBAL.detokenize([token]))
+
+
     # prompt = ChatPromptTemplate.from_messages([
     #     SystemMessagePromptTemplate.from_template(
     #         full_prompt
@@ -150,7 +155,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     # await state.update_data(chat_memory=memory)
 
-    response = LLAMA_GLOBAL.create_completion(f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}Girl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4, stop=["User:", "\n"])['choices'][0]
+    response = LLAMA_GLOBAL.create_completion(f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}\nGirl:", max_tokens=64, echo=True, top_k=8,top_p=0.92,temperature=0.4, stop=["User:", "\n"])['choices'][0]
 
     await bot.edit_message_text(response, message__.chat.id, message__.message_id)
 
