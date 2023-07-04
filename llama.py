@@ -8,7 +8,7 @@ n_batch = 1024  # Should be between 1 and n_ctx, consider the amount of VRAM in 
 
 def load_llama():
     llama_llm = LlamaCpp(
-        model_path="./guanaco-33B.ggmlv3.q4_K_M.bin",
+        model_path="../guanaco-33B.ggmlv3.q4_K_M.bin",
         n_gpu_layers=n_gpu_layers,
         n_batch=n_batch,
         callback_manager=callback_manager,
