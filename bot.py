@@ -90,13 +90,12 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok == "\n":
             print("FINISHED")
+            await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
             return
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
-
-    await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
 @dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
 async def conversation_handler(message: types.Message, state: FSMContext):
@@ -117,13 +116,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok == "\n":
             print("FINISHED")
+            await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
             return
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
-
-    await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
