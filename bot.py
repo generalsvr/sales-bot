@@ -21,18 +21,20 @@ class StateMachine(StatesGroup):
 
 @dp.message_handler(Command('girls'), state="*")
 async def agents_handler(message: types.Message, state: FSMContext):
-    agents = ["Lisa (18, EN)", "Лера (16, RU)"]
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-    buttons = [types.InlineKeyboardButton(agent, callback_data=agent) for agent in agents]
+    buttons = [
+        types.InlineKeyboardButton("Lisa (18, EN)", callback_data="lisa"),
+        types.InlineKeyboardButton("Маша (16, RU)", callback_data="maha")
+    ]
     keyboard.add(*buttons)
 
     data = await state.get_data()
     lang = data.get("language", "english")
 
     if lang == "english":
-        await bot.send_message(message.chat.id, "🤖 Choose a girl:", reply_markup=keyboard)
+        await bot.send_message(message.chat.id, "🤖 Choose a hoe:", reply_markup=keyboard)
     elif lang == "russian":
-        await bot.send_message(message.chat.id, "🤖 Выберите модель:", reply_markup=keyboard)
+        await bot.send_message(message.chat.id, "🤖 Выберите девочку:", reply_markup=keyboard)
 
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
@@ -60,9 +62,9 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/language - Choose a language", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe\n/language - Choose a language", parse_mode="Markdown")
     elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/language - Выбрать язык", parse_mode="Markdown")
+        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель\n/language - Выбрать язык", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
@@ -70,17 +72,29 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     await StateMachine.CHAT.set()
     data = await state.get_data()
     lang = data.get("language", "english")
+    girl = data.get("girl", "lisa")
+
     await state.update_data(chat_memory="")
     
     if lang == "english":
         message__ = await message.answer("⚡️ Conversation history deleted. Starting new conversation...")
         init_message = "User: Hi babe\nGirl:"
-        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
+        if girl == "lisa":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
+        elif girl == "maha":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
         SYSTEM_PROMPT = formatted_prompt + init_message
     elif lang == "russian":
         message__ = await message.answer("⚡️ История диалога удалена. Начинаю новый диалог...")
         init_message = "User: Привет, малышка\nGirl:"
-        formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
+
+        if girl == "lisa":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Лиза")
+        elif girl == "maha":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Маша")
+
         SYSTEM_PROMPT = formatted_prompt + init_message
 
     buffer = []
@@ -105,16 +119,27 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("language", "english")
     memory = data.get("chat_memory", None)
+    girl = data.get("girl", "lisa")
 
     print("CHAT MEMORY", memory)
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
-        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
+        if girl == "lisa":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
+        elif girl == "maha":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
         SYSTEM_PROMPT = formatted_prompt + memory + "User: " + message.text + "\nGirl:"
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
-        formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
+
+        if girl == "lisa":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Лиза")
+        elif girl == "maha":
+            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Маша")
+
         SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
@@ -151,11 +176,10 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
         await bot.edit_message_text("🇷🇺 Язык изменен на русский", message.chat.id, message.message_id)
        
 
-
-@dp.callback_query_handler(lambda c: c.data in ["Basic", "Advanced"], state="*")
+@dp.callback_query_handler(lambda c: c.data in ["maha", "lisa"], state="*")
 async def process_callback_agents(callback_query: types.CallbackQuery, state: FSMContext):
     agent = callback_query.data
-    await state.update_data(agent=agent)
+    await state.update_data(girl=agent)
 
     data = await state.get_data()
     lang = data.get("language", "english")
@@ -165,9 +189,9 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
     await bot.answer_callback_query(callback_query.id)
 
     if lang == "english":
-        await bot.edit_message_text(f"🤖 Agent set to {agent}", message.chat.id, message.message_id)
+        await bot.edit_message_text(f"🤖 Hoe set to {agent}", message.chat.id, message.message_id)
     elif lang == "russian":
-        await bot.edit_message_text(f"🤖 Агент изменен на {agent}", message.chat.id, message.message_id)
+        await bot.edit_message_text(f"🤖 Модель изменена на {agent}", message.chat.id, message.message_id)
         
 if __name__ == '__main__':
     from aiogram import executor
