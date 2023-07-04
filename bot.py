@@ -112,7 +112,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     prompt = f"Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. When she was 18, she moved to the US from Honduras to pursue her passion for music. But this did not work out completely and she found a job at webcam site.\n\nCONVERSATION 1:\n\nUser: hey bitch\nGirl: hey daddy, do you want to fuck me?\nUser: oh yeah\nGirl: okay then, take off your clothes\nUser: i am jerking off! get on your knees\nGirl: sure, daddy! I am standing on my knees...\n\nCONVERSATION 2:\n\nUser: {message.text}\nGirl:"
 
     buffer = []
-    tokens = LLAMA_GLOBAL.tokenize(bytes(prompt))
+    tokens = LLAMA_GLOBAL.tokenize(prompt.encode("utf-8"))
     for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=1.0, repeat_penalty=1.1):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok == "\n":
