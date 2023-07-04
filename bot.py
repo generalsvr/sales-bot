@@ -99,7 +99,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     memory = ConversationBufferMemory(return_messages=True)
     conversation = ConversationChain(memory=memory, prompt=prompt, llm=LLAMA_GLOBAL)
-    response = conversation.predict(input="### User: Hi babe")
+    response = conversation.predict(input="Hi babe\n### Girl:")
     response = response.replace("M:", "")
 
     await state.update_data(chat_memory=memory)
