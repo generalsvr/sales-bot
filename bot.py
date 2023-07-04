@@ -197,7 +197,13 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text, state="*")
 async def conversation_handler_raw(message: types.Message, state: FSMContext):
-    await message.answer("🤖 Use /new command to start a new conversation")
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    if lang == "english":
+        await message.answer("🤖 Use /new command to start a new conversation")
+    elif lang == "russian":
+        await message.answer("🤖 Используйте команду /new чтобы начать новый диалог")
 
 
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
