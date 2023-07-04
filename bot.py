@@ -6,14 +6,6 @@ from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from prompts import *
-from langchain.prompts import (
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate
-)
-from langchain.chains import ConversationChain
-from langchain.memory import ConversationBufferMemory
 from llama_cpp import Llama
 
 STOP_TOKENS = ["\n", "#", " #", "# "]
@@ -83,11 +75,13 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     if lang == "english":
         message__ = await message.answer("⚡️ Conversation history deleted. Starting new conversation...")
         init_message = "User: Hi babe\nGirl:"
-        SYSTEM_PROMPT = PORN_LLAMA_EN + init_message
+        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+        SYSTEM_PROMPT = formatted_prompt + init_message
     elif lang == "russian":
         message__ = await message.answer("⚡️ История диалога удалена. Начинаю новый диалог...")
         init_message = "User: Привет, малышка\nGirl:"
-        SYSTEM_PROMPT = PORN_LLAMA_RU + init_message
+        formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
+        SYSTEM_PROMPT = formatted_prompt + init_message
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
@@ -116,10 +110,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
-        SYSTEM_PROMPT = PORN_LLAMA_EN + memory + "User: " + message.text + "\nGirl:"
+        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+        SYSTEM_PROMPT = formatted_prompt + memory + "User: " + message.text + "\nGirl:"
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
-        SYSTEM_PROMPT = PORN_LLAMA_RU + memory + "User: " +  message.text + "\nGirl:"
+        formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
+        SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
