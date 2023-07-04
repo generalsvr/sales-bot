@@ -36,6 +36,24 @@ async def agents_handler(message: types.Message, state: FSMContext):
     elif lang == "russian":
         await bot.send_message(message.chat.id, "🤖 Выберите девочку:", reply_markup=keyboard)
 
+@dp.message_handler(Command('sampling'), state="*")
+async def agents_handler(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("Top K", callback_data="topk"),
+        types.InlineKeyboardButton("Mirostat V2", callback_data="mirostat")
+    ]
+    keyboard.add(*buttons)
+
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    if lang == "english":
+        await bot.send_message(message.chat.id, "🎛 Choose a sampling method:", reply_markup=keyboard)
+    elif lang == "russian":
+        await bot.send_message(message.chat.id, "🎛 Выберите метод семплинга:", reply_markup=keyboard)
+
+
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup(row_width=1)
@@ -73,6 +91,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("language", "english")
     girl = data.get("girl", "lisa")
+    sampling = data.get("sampling", "top_k")
 
     await state.update_data(chat_memory="")
     
@@ -99,7 +118,15 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
-    for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=0.4, repeat_penalty=1.1):
+
+    if sampling == "top_k":
+        kwargs = {"tokens" : tokens, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
+    else:
+        kwargs = {"tokens" : tokens, "mirostat_mode" : 2, "temp" : 0.4}
+
+    print("SAMPLING: ", kwargs)
+
+    for token in LLAMA_GLOBAL.generate(**kwargs):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
@@ -120,8 +147,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
     memory = data.get("chat_memory", None)
     girl = data.get("girl", "lisa")
-
-    print("CHAT MEMORY", memory)
+    sampling = data.get("sampling", "top_k")
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
@@ -146,7 +172,13 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
-    for token in LLAMA_GLOBAL.generate(tokens, top_k=40, top_p=0.95, temp=0.4, repeat_penalty=1.1):
+
+    if sampling == "top_k":
+        kwargs = {"tokens" : tokens, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
+    else:
+        kwargs = {"tokens" : tokens, "mirostat_mode" : 2, "temp" : 0.4}
+    
+    for token in LLAMA_GLOBAL.generate(**kwargs):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
@@ -175,6 +207,22 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
     elif lang == "russian":
         await bot.edit_message_text("🇷🇺 Язык изменен на русский", message.chat.id, message.message_id)
        
+
+@dp.callback_query_handler(lambda c: c.data in ["mirostat", "topk"], state="*")
+async def process_callback_sampling(callback_query: types.CallbackQuery, state: FSMContext):
+    method = callback_query.data
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    await state.update_data(sampling=method)
+
+    message = callback_query.message
+
+    await bot.answer_callback_query(callback_query.id)
+    if lang == "english":
+        await bot.edit_message_text("✅ Sampling set to {method}", message.chat.id, message.message_id)
+    elif lang == "russian":
+        await bot.edit_message_text("✅ Семплинг изменен на {method}", message.chat.id, message.message_id)
 
 @dp.callback_query_handler(lambda c: c.data in ["maha", "lisa"], state="*")
 async def process_callback_agents(callback_query: types.CallbackQuery, state: FSMContext):
