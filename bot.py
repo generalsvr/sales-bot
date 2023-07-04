@@ -97,7 +97,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
-                await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
+                await bot.edit_message_text(" ".join(buffer), message__.chat.id, message__.message_id)
 
     await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
