@@ -81,10 +81,12 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     
     if lang == "english":
         message__ = await message.answer("⚡️ Starting new conversation...")
-        SYSTEM_PROMPT = PORN_LLAMA_EN + " Hi babe\nGirl:"
+        init_message = " Hi babe\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_EN + init_message
     elif lang == "russian":
         message__ = await message.answer("⚡️ Начинаю новый диалог...")
-        SYSTEM_PROMPT = PORN_LLAMA_RU + " Привет, малышка\nGirl:"
+        init_message = " Привет, малышка\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_RU + init_message
 
     buffer = []
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
@@ -93,23 +95,23 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
-            # set memory
-            await state.update_data(chat_memory="User: Привет, малышка\nGirl:" + "".join(buffer) + "\n")
+            await state.update_data(chat_memory="User:" + init_message + "".join(buffer) + "\n")
             return
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
 
-    await state.update_data(chat_memory="User: Привет, малышка\nGirl:" + "".join(buffer) + "\n")
+    await state.update_data(chat_memory="User:" + init_message + "".join(buffer) + "\n")
 
 @dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
 async def conversation_handler(message: types.Message, state: FSMContext):
 
     data = await state.get_data()
     lang = data.get("language", "english")
+    memory = data.get("chat_memory", None)
 
-    print("CHAT MEMORY", data.get("chat_memory", "None"))
+    print("CHAT MEMORY", memory)
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
@@ -125,11 +127,16 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+            memory += "User:" + message.text + "\nGirl:" + "".join(buffer) + "\n"
+            await state.update_data(chat_memory=memory)
             return
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+
+    memory += "User:" + message.text + "\nGirl:" + "".join(buffer) + "\n"
+    await state.update_data(chat_memory=memory)
 
 @dp.callback_query_handler(lambda c: c.data in ["russian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
