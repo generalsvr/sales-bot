@@ -68,9 +68,9 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - Choose a girl\n/language - Choose a language", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/language - Choose a language", parse_mode="Markdown")
     elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - Выбрать модель\n/language - Выбрать язык", parse_mode="Markdown")
+        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/language - Выбрать язык", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
