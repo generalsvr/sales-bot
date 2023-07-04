@@ -13,7 +13,7 @@ Girl: меня зовут Лиза, но ты можешь называть ме
 
 CONVERSATION 2:
 
-User:"""
+"""
 
 PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: Her name is Lisa. She is 19 years old. She loves to show her body to strangers for money.
 
@@ -30,4 +30,4 @@ Girl: my name is Lisa, but you call me anything
 
 CONVERSATION 2:
 
-User:"""
+"""

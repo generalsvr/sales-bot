@@ -82,11 +82,11 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     
     if lang == "english":
         message__ = await message.answer("⚡️ Conversation history deleted. Starting new conversation...")
-        init_message = " Hi babe\nGirl:"
+        init_message = "User: Hi babe\nGirl:"
         SYSTEM_PROMPT = PORN_LLAMA_EN + init_message
     elif lang == "russian":
         message__ = await message.answer("⚡️ История диалога удалена. Начинаю новый диалог...")
-        init_message = " Привет, малышка\nGirl:"
+        init_message = "User: Привет, малышка\nGirl:"
         SYSTEM_PROMPT = PORN_LLAMA_RU + init_message
 
     buffer = []
@@ -96,14 +96,14 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
-            await state.update_data(chat_memory="User: " + init_message + "".join(buffer) + "\n")
+            await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
             return
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
 
-    await state.update_data(chat_memory="User: " + init_message + "".join(buffer) + "\n")
+    await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
 
 @dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
 async def conversation_handler(message: types.Message, state: FSMContext):
@@ -116,10 +116,10 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
-        SYSTEM_PROMPT = PORN_LLAMA_EN + memory + message.text + "\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_EN + memory + "User: " + message.text + "\nGirl:"
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
-        SYSTEM_PROMPT = PORN_LLAMA_RU + memory +  message.text + "\nGirl:"
+        SYSTEM_PROMPT = PORN_LLAMA_RU + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
