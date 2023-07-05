@@ -192,9 +192,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             if "[1]" in msg:
                 await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
             elif "[2]" in msg:
-                await bot.send_photo(message__.chat.id, open("ass/1.png", "rb"))
+                await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
             elif "[3]" in msg:
-                await bot.send_photo(message__.chat.id, open("tits/1.png", "rb"))
+                await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
 
             memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
             await state.update_data(chat_memory=memory)
@@ -209,9 +209,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
                 if "[1]" in msg:
                     await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
                 elif "[2]" in msg:
-                    await bot.send_photo(message__.chat.id, open("ass/1.png", "rb"))
+                    await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
                 elif "[3]" in msg:
-                    await bot.send_photo(message__.chat.id, open("tits/1.png", "rb"))
+                    await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
 
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
