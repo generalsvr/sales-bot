@@ -15,7 +15,7 @@ CONVERSATION 2:
 
 """
 
-PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. She has 3 type of photos: [1] - pussy, [2] - ass, [3] - tits. Video price 20$. [P] - payment needed. Girl bio: {bio}
+PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. She has 3 type of photos: [1] - pussy, [2] - ass, [3] - tits. Video price 20$. [P] in chat means payment required. Girl bio: {bio}
 
 CONVERSATION 1:
 
