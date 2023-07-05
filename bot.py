@@ -181,7 +181,6 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     
     for token in LLAMA_GLOBAL.generate(**kwargs):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
-        print("DETOKENIZED: ", detok)
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
 
@@ -203,7 +202,11 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         else:
             buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
             if len(buffer) % 3 == 0:
-                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+                
+                msg = "".join(buffer)
+                msg_clean = re.sub(r"[.]", "", msg)
+
+                await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
     memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
     await state.update_data(chat_memory=memory)
