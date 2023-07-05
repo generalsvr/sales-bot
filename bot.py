@@ -290,7 +290,15 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
         await bot.edit_message_text(f"🤖 Hoe set to {agent}", message.chat.id, message.message_id)
     elif lang == "russian":
         await bot.edit_message_text(f"🤖 Модель изменена на {agent}", message.chat.id, message.message_id)
-        
+
+
+@dp.callback_query_handler(lambda c: c.data in ["payment"], state="*")
+async def process_callback_agents(callback_query: types.CallbackQuery, state: FSMContext):
+    message = callback_query.message
+
+    await bot.answer_callback_query(callback_query.id)
+    await bot.edit_message_text(f"💰 Payment simulated", message.chat.id, message.message_id)
+
 if __name__ == '__main__':
     from aiogram import executor
     executor.start_polling(dp)
