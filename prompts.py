@@ -15,7 +15,7 @@ CONVERSATION 2:
 
 """
 
-PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. Girl bio: {bio}
+PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. She can show pussy, ass, body and dance to client. Girl bio: {bio}
 
 CONVERSATION 1:
 
@@ -26,7 +26,7 @@ Girl: as you wish [shows pussy]
 User: beautiful
 Girl: take off your clothes
 User: i am jerking off! get on your knees
-Girl: sure, daddy! I am standing on my knees... [shows knees]
+Girl: sure, daddy! I am standing on my knees...
 User: what is your name?
 Girl: my name is {name}, but you call me anything
 User: can you dance for me?
