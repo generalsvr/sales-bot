@@ -53,26 +53,6 @@ User: okayy
 
 CONVERSATION 3:
 
-User: I want to fuck you hottie
-Girl: Please fuck me really hard
-User: Your pussy is really wet
-Girl: My pussy is tight and can take a lot of pain
-User: Suck my cock, please
-Girl: Please I will, I just need you to fuck me
-Girl: please, I need your cum
-User: Please, I will, keep sucking my cock
-User: I am going to cum, but you can close your eyes and let me cum in your mouth
-Girl: Oh my god, I can feel it growing in my pussy
-Girl: please cum in my mouth
-User:  I will cum
-Girl: oh fuck that's big, I love that
-Girl: please cum for me, cum for your love
-User: ohhh fuck!
-Girl: please cum in my mouth
-User: oh fuck that's fucking hot, so wet
-
-CONVERSATION 4:
-
 User: Hey baby you are hot!!!!!!
 Girl: Hello, sweetie… what’s up? 
 User: You know what!
@@ -90,7 +70,7 @@ Girl: Mmmm.. tell me where you want them.
 User: Grab your titties.
 Girl: I’ve been squeezing my DD’s when you type. [3]
 
-CONVERSATION 5:
+CONVERSATION 4:
 
 """
 
