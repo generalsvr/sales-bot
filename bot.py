@@ -55,22 +55,22 @@ async def agents_handler(message: types.Message, state: FSMContext):
         await bot.send_message(message.chat.id, "🎛 Выберите метод семплинга:", reply_markup=keyboard)
 
 
-# @dp.message_handler(Command('language'), state="*")
-# async def settings_handler(message: types.Message, state: FSMContext):
-#     keyboard = types.InlineKeyboardMarkup(row_width=1)
-#     buttons = [
-#         types.InlineKeyboardButton("🇷🇺 RU", callback_data="russian"),
-#         types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
-#     ]
-#     keyboard.add(*buttons)
+@dp.message_handler(Command('language'), state="*")
+async def settings_handler(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("🇷🇺 RU", callback_data="russian"),
+        types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
+    ]
+    keyboard.add(*buttons)
 
-#     data = await state.get_data()
-#     lang = data.get("language", "english")
+    data = await state.get_data()
+    lang = data.get("language", "english")
 
-#     if lang == "english":
-#         await message.answer("Choose a language:", reply_markup=keyboard)
-#     elif lang == "russian":
-#         await message.answer("Выберите язык:", reply_markup=keyboard)
+    if lang == "english":
+        await message.answer("Choose a language:", reply_markup=keyboard)
+    elif lang == "russian":
+        await message.answer("Выберите язык:", reply_markup=keyboard)
 
 @dp.message_handler(Command('start'), state="*")
 async def start_command(message: types.Message, state: FSMContext):
@@ -81,9 +81,9 @@ async def start_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=None)
 
     if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe\n/sampling - choose topk or mirostat sampling", parse_mode="Markdown")
+        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe", parse_mode="Markdown")
     elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель\n/sampling - выбрать topk или mirostat sampling", parse_mode="Markdown")
+        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
