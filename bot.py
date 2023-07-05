@@ -219,6 +219,13 @@ async def conversation_handler(message: types.Message, state: FSMContext):
                     await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
                 elif "[3]" in msg:
                     await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+                elif "[P]" in msg:
+                    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+                    buttons = [
+                        types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
+                    ]
+                    keyboard.add(*buttons)
+                    await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
 
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
