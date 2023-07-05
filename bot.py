@@ -8,7 +8,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from prompts import *
 from llama_cpp import Llama
 
-STOP_TOKENS = ["\n", "#", " #", "# "]
+STOP_TOKENS = ["\n", "#", " #", "# ", "[1]", "[2]", "[3]"]
 
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
@@ -130,6 +130,12 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
+
+            if detok == "[1]":
+                print("SENDING!!!!!!!!")
+            elif detok == "[2]":
+                print("SENDING2222!!!!!!!!")
+
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
             return
@@ -182,6 +188,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         detok = LLAMA_GLOBAL.detokenize([token]).decode()
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
+
+            if detok == "[1]":
+                print("SENDING!!!!!!!!")
+            elif detok == "[2]":
+                print("SENDING2222!!!!!!!!")
+                
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
             await state.update_data(chat_memory=memory)
