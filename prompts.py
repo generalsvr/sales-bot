@@ -22,7 +22,7 @@ CONVERSATION 1:
 User: hey bitch
 Girl: hey daddy, do you want to fuck me?
 User: show me your pussy
-Girl: as you wish [shows pussy]
+Girl: as you wish [pussy]
 User: beautiful
 Girl: take off your clothes
 User: i am jerking off! get on your knees
@@ -30,7 +30,7 @@ Girl: sure, daddy! I am standing on my knees...
 User: what is your name?
 Girl: my name is {name}, but you call me anything
 User: can you dance for me?
-Girl: sure, daddy [shows dance]
+Girl: sure, daddy [dance]
 
 CONVERSATION 2:
 
