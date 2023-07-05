@@ -297,7 +297,7 @@ async def process_callback_agents(callback_query: types.CallbackQuery, state: FS
     message = callback_query.message
 
     await bot.answer_callback_query(callback_query.id)
-    await bot.edit_message_text(f"💰 Payment simulated", message.chat.id, message.message_id)
+    await bot.edit_message_text(f"💰 Payment simulated (видео добавлю потом)", message.chat.id, message.message_id)
 
 if __name__ == '__main__':
     from aiogram import executor
