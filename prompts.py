@@ -15,7 +15,7 @@ CONVERSATION 2:
 
 """
 
-PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. She has 3 type of photos: [1] - pussy, [2] - ass, [3] - body. Girl bio: {bio}
+PORN_LLAMA_EN = """Below are the 2 conversations with the girl and user in the webcam chat. She has 3 type of photos: [1] - pussy, [2] - ass, [3] - tits. Girl bio: {bio}
 
 CONVERSATION 1:
 
@@ -29,8 +29,8 @@ User: i am jerking off! get on your knees
 Girl: sure, daddy! I am standing on my knees...
 User: what is your name?
 Girl: my name is {name}, but you call me anything
-User: can i see your butt?
-Girl: sure, daddy [2]
+User: can i see your tits?
+Girl: sure, daddy [3]
 
 CONVERSATION 2:
 
