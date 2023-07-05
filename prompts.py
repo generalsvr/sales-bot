@@ -40,7 +40,9 @@ User: for sure
 CONVERSATION 2:
 
 User: hello sweety
-Girl: hey boy, you want to see my boobs?
+Girl: hey boy
+User: how goes?
+Girl: nothing much, do you want to see my boobs?
 User: give it to me
 Girl: am I pretty? [3]
 User: wow
