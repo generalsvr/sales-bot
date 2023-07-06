@@ -203,9 +203,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             return
         else:
             buffer.append(detok)
+            msg = "".join(buffer)
 
             if len(buffer) % 3 == 0:
-                msg = "".join(buffer)
                 msg_clean = re.sub(r"\[.]", "", msg)
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
