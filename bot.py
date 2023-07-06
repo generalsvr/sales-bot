@@ -14,7 +14,7 @@ STOP_TOKENS = ["\n", "#", " #", "# "]
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
 dp = Dispatcher(bot, storage=MemoryStorage())
-LLAMA_GLOBAL = Llama(model_path="/airoboros-65b-gpt4-1.4.ggmlv3.q4_K_M.bin", n_gpu_layers=48, seed=-1)
+LLAMA_GLOBAL = Llama(model_path="/airoboros-65b-gpt4-1.4.ggmlv3.q4_K_M.bin", n_gpu_layers=45, seed=-1)
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
@@ -121,9 +121,9 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
 
     if sampling == "top_k":
-        kwargs = {"tokens" : tokens, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
     else:
-        kwargs = {"tokens" : tokens, "mirostat_mode" : 2, "temp" : 0.4}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4}
 
     print("SAMPLING: ", kwargs)
 
