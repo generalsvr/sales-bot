@@ -155,12 +155,16 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     elif girl == "maha":
         formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
 
+    user_message = "User: " +  message.text + "\nGirl:"
+
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
     elif lang == "russian":
+        # translate to english
+        user_message = "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:"
         message__ = await message.answer("💋 Шкура пишет...")
 
-    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
+    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  user_message
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
