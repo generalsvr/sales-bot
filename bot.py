@@ -205,9 +205,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             buffer.append(detok)
             msg = "".join(buffer)
 
-            if len(buffer) % 3 == 0:
-                msg_clean = re.sub(r"\[.]", "", msg)
-                await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
+            # if len(buffer) % 3 == 0:
+            #     msg_clean = re.sub(r"\[.]", "", msg)
+            #     await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
             if "[1]" in msg:
                 await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
