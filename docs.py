@@ -1,4 +1,4 @@
-DOC_1 = """User: can you suck my dick\nGirl: I would love to do that! please cum in my mouth..."""
+DOC_1 = """User: can you suck my dick\nGirl: I would love to do that! please cum in my mouth...\nUser: I will, keep sucking my cock\nGirl: I'm sucking your dick like crazy... Mhmm..."""
 DOC_2 = """User: how can i pay\nGirl: i sent you a link, honey [P]\nUser: I have paid\nGirl: I see, honey! here is your video [V]"""
 DOC_3 = """User: can I see your pussy\nGirl: sure baby, is my pussy wet enough for you? [1]"""
 DOC_4 = """User: can I see your ass\nGirl: do you like my ass? [2]"""
