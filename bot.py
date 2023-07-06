@@ -115,9 +115,9 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     buffer = []
     if sampling == "top_k":
-        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True, "max_tokens" : 1024}
     else:
-        kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True, "max_tokens" : 1024}
 
     print("SAMPLING: ", kwargs)
 
@@ -202,7 +202,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             return
         else:
             buffer += detok
-            if len(buffer) % 5 == 0:
+            if len(buffer) % 3 == 0:
                 await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
 
