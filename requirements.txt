@@ -3,4 +3,4 @@ langchain
 openai
 chromadb
 tiktoken
-googletrans
+googletrans==3.1.0a0
