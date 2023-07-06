@@ -203,26 +203,26 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             return
         else:
             buffer.append(detok)
-            if len(buffer) % 3 == 0:
 
+            if len(buffer) % 3 == 0:
                 msg = "".join(buffer)
                 msg_clean = re.sub(r"\[.]", "", msg)
-
-                if "[1]" in msg:
-                    await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
-                elif "[2]" in msg:
-                    await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
-                elif "[3]" in msg:
-                    await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
-                elif "[P]" in msg:
-                    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-                    buttons = [
-                        types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
-                    ]
-                    keyboard.add(*buttons)
-                    await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
-
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
+
+            if "[1]" in msg:
+                await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
+            elif "[2]" in msg:
+                await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
+            elif "[3]" in msg:
+                await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+            elif "[P]" in msg:
+                keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+                buttons = [
+                    types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
+                ]
+                keyboard.add(*buttons)
+                await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
+
 
     memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
     await state.update_data(chat_memory=memory)
