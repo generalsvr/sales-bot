@@ -121,7 +121,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
 
     if sampling == "top_k":
-        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1}
     else:
         kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4}
 
