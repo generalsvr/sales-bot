@@ -164,7 +164,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
-    buffer = []
+    buffer = ""
     if sampling == "top_k":
         kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True}
     else:
@@ -175,8 +175,21 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
 
-            msg = "".join(buffer)
-            msg_clean = re.sub(r"\[.]", "", msg)
+            msg_clean = re.sub(r"\[.]", "", buffer)
+
+            if "[1]" in buffer:
+                await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
+            elif "[2]" in buffer:
+                await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
+            elif "[3]" in buffer:
+                await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+            elif "[P]" in buffer:
+                keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+                buttons = [
+                    types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
+                ]
+                keyboard.add(*buttons)
+                await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
 
             if lang == "english":
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
@@ -184,48 +197,40 @@ async def conversation_handler(message: types.Message, state: FSMContext):
                 ru_text = translator.translate(msg_clean, src='en', dest='ru').text
                 await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
 
-            if "[1]" in msg:
-                await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
-            elif "[2]" in msg:
-                await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
-            elif "[3]" in msg:
-                await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
-            elif "[P]" in msg:
-                keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-                buttons = [
-                    types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
-                ]
-                keyboard.add(*buttons)
-                await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
-
             memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
             await state.update_data(chat_memory=memory)
             return
         else:
-            buffer.append(detok)
-            msg = "".join(buffer)
+            buffer += detok
+            if len(buffer) % 5 == 0:
+                await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
 
-            # if len(buffer) % 3 == 0:
-            #     msg_clean = re.sub(r"\[.]", "", msg)
-            #     await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
-            if "[1]" in msg:
-                await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
-            elif "[2]" in msg:
-                await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
-            elif "[3]" in msg:
-                await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
-            elif "[P]" in msg:
-                keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-                buttons = [
-                    types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
-                ]
-                keyboard.add(*buttons)
-                await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
-
+    if "[1]" in buffer:
+        await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
+    elif "[2]" in buffer:
+        await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
+    elif "[3]" in buffer:
+        await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+    elif "[P]" in buffer:
+        keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+        buttons = [
+            types.InlineKeyboardButton("✅ Pay now", callback_data="payment"),
+        ]
+        keyboard.add(*buttons)
+        buffer = buffer.replace("[P]", "")
+        await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
 
     memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
     await state.update_data(chat_memory=memory)
+
+    msg_clean = re.sub(r"\[.]", "", buffer)
+
+    if lang == "english":
+        await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
+    elif lang == "russian":
+        ru_text = translator.translate(msg_clean, src='en', dest='ru').text
+        await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
 
 
 @dp.message_handler(lambda message: message.text, state="*")
