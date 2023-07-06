@@ -160,7 +160,6 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
     elif lang == "russian":
-        # translate to english
         user_message = "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:"
         message__ = await message.answer("💋 Шкура пишет...")
 
@@ -228,7 +227,11 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
-    memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
+    if lang == "english":
+        memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
+    elif lang == "russian":
+        memory += "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:" + "".join(buffer) + "\n" 
+        
     await state.update_data(chat_memory=memory)
 
 
