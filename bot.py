@@ -190,6 +190,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
                 await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
             elif "[3]" in buffer:
                 await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+            elif "[4]" in buffer:
+                await bot.send_photo(message__.chat.id, open("legs/1.jpg", "rb"))
             elif "[P]" in buffer:
                 keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
                 buttons = [
@@ -221,6 +223,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         await bot.send_photo(message__.chat.id, open("ass/1.jpg", "rb"))
     elif "[3]" in buffer:
         await bot.send_photo(message__.chat.id, open("tits/1.jpg", "rb"))
+    elif "[4]" in buffer:
+        await bot.send_photo(message__.chat.id, open("legs/1.jpg", "rb"))
     elif "[P]" in buffer:
         keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
         buttons = [

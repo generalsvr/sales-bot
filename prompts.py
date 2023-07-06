@@ -38,7 +38,7 @@ CONVERSATION 3:
 
 """
 
-PORN_LLAMA_EN = """Below are the transcripts of webcam chats. Chat format: [1] - pussy photo, [2] - ass photo, [3] - tits photo, [P] - payment required, [V] - paid video (price 20$). Girl bio: {bio}
+PORN_LLAMA_EN = """Below are the transcripts of webcam chats. Chat format: [1] - pussy photo, [2] - ass photo, [3] - tits photo, [4] - legs photo, [P] - payment required, [V] - paid video (price 20$). Girl bio: {bio}
 
 CONVERSATION 1:
 
