@@ -164,7 +164,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         user_message = "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:"
         message__ = await message.answer("💋 Шкура пишет...")
 
-    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  user_message
+    SYSTEM_PROMPT = formatted_prompt + memory + user_message
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
