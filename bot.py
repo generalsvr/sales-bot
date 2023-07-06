@@ -197,7 +197,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
                 ru_text = translator.translate(msg_clean, src='en', dest='ru').text
                 await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
 
-            memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
+            memory += "User: " + message.text + "\nGirl:" + buffer + "\n"
             await state.update_data(chat_memory=memory)
             return
         else:
@@ -221,7 +221,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         buffer = buffer.replace("[P]", "")
         await bot.send_message(message.chat.id, "Payment event triggered", reply_markup=keyboard)
 
-    memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
+    memory += "User: " + message.text + "\nGirl:" + buffer + "\n"
     await state.update_data(chat_memory=memory)
 
     msg_clean = re.sub(r"\[.]", "", buffer)
