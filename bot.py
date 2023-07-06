@@ -130,7 +130,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
         print("TOKEN: ", token)
         # detok = LLAMA_GLOBAL.detokenize([token]).decode()
-        detok = token
+        detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
             await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
