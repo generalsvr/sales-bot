@@ -8,6 +8,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from prompts import *
 import re
 from llama_cpp import Llama
+from embeddings import search
 
 from googletrans import Translator
 translator = Translator()
@@ -150,6 +151,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     girl = data.get("girl", "lisa")
     sampling = data.get("sampling", "top_k")
 
+    document = search(message.text)
+
     if girl == "lisa":
         formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
     elif girl == "maha":
@@ -160,7 +163,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
 
-    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
+    SYSTEM_PROMPT = formatted_prompt + document + "Conversation 4:\n\n" + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
