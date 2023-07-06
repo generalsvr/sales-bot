@@ -155,15 +155,12 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     elif girl == "maha":
         formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
 
-    user_message = "User: " +  message.text + "\nGirl:"
-
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
     elif lang == "russian":
-        user_message = "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:"
         message__ = await message.answer("💋 Шкура пишет...")
 
-    SYSTEM_PROMPT = formatted_prompt + memory + user_message
+    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
@@ -227,11 +224,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
                 await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
 
-    if lang == "english":
-        memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
-    elif lang == "russian":
-        memory += "User: " + translator.translate(message.text, src='ru', dest='en').text + "\nGirl:" + "".join(buffer) + "\n" 
-        
+    memory += "User: " + message.text + "\nGirl:" + "".join(buffer) + "\n"
     await state.update_data(chat_memory=memory)
 
 
