@@ -111,9 +111,9 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         init_message = "User: Привет, малышка\nGirl:"
 
         if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Лиза")
+            formatted_prompt = PORN_LLAMA_RU.format(bio=LISA_BIO, name="Лиза")
         elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Маша")
+            formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
 
         SYSTEM_PROMPT = formatted_prompt + init_message
 
@@ -163,9 +163,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         message__ = await message.answer("💋 Шкура пишет...")
 
         if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Лиза")
+            formatted_prompt = PORN_LLAMA_RU.format(bio=LISA_BIO, name="Лиза")
         elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Маша")
+            formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
 
         SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
