@@ -9,6 +9,9 @@ from prompts import *
 import re
 from llama_cpp import Llama
 
+from googletrans import Translator
+translator = Translator()
+
 STOP_TOKENS = ["\n", "#", " #", "# "]
 
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
@@ -95,31 +98,22 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     sampling = data.get("sampling", "top_k")
 
     await state.update_data(chat_memory="")
-    
+
+    init_message = "User: Hi babe\nGirl:"
+
+    if girl == "lisa":
+        formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
+    elif girl == "maha":
+        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
     if lang == "english":
-        message__ = await message.answer("⚡️ Conversation history deleted. Starting new conversation...")
-        init_message = "User: Hi babe\nGirl:"
-
-        if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
-        elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
-
-        SYSTEM_PROMPT = formatted_prompt + init_message
+        message__ = await message.answer("⚡️ Conversation history deleted. Starting new conversation...")    
     elif lang == "russian":
         message__ = await message.answer("⚡️ История диалога удалена. Начинаю новый диалог...")
-        init_message = "User: Привет, малышка\nGirl:"
 
-        if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_RU.format(bio=LISA_BIO, name="Лиза")
-        elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
-
-        SYSTEM_PROMPT = formatted_prompt + init_message
+    SYSTEM_PROMPT = formatted_prompt + init_message
 
     buffer = []
-    tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
-
     if sampling == "top_k":
         kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True}
     else:
@@ -128,12 +122,16 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     print("SAMPLING: ", kwargs)
 
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
-        print("TOKEN: ", token)
-        # detok = LLAMA_GLOBAL.detokenize([token]).decode()
         detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
-            await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+
+            if lang == "english":
+                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+            elif lang == "russian":
+                ru_text = translator.translate("".join(buffer), src='en', dest='ru').text
+                await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
+
             await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
             return
         else:
@@ -152,44 +150,39 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     girl = data.get("girl", "lisa")
     sampling = data.get("sampling", "top_k")
 
+    if girl == "lisa":
+        formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
+    elif girl == "maha":
+        formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
+
     if lang == "english":
         message__ = await message.answer("💋 Hoe is typing...")
-
-        if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
-        elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_EN.format(bio=MAHA_BIO, name="Masha")
-
-        SYSTEM_PROMPT = formatted_prompt + memory + "User: " + message.text + "\nGirl:"
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
 
-        if girl == "lisa":
-            formatted_prompt = PORN_LLAMA_RU.format(bio=LISA_BIO, name="Лиза")
-        elif girl == "maha":
-            formatted_prompt = PORN_LLAMA_RU.format(bio=MAHA_BIO, name="Маша")
-
-        SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
+    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
     buffer = []
-    tokens = LLAMA_GLOBAL.tokenize(SYSTEM_PROMPT.encode("utf-8"))
-
     if sampling == "top_k":
-        kwargs = {"tokens" : tokens, "top_k" : 40, "top_p" : 0.95, "temp" : 0.4, "repeat_penalty" : 1.1}
+        kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True}
     else:
-        kwargs = {"tokens" : tokens, "mirostat_mode" : 2, "temp" : 0.4}
-    
-    for token in LLAMA_GLOBAL.generate(**kwargs):
-        detok = LLAMA_GLOBAL.detokenize([token]).decode()
+        kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True}
+
+    for token in LLAMA_GLOBAL.create_completion(**kwargs):
+        detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
 
             msg = "".join(buffer)
             msg_clean = re.sub(r"\[.]", "", msg)
 
-            await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
+            if lang == "english":
+                await bot.edit_message_text(msg_clean, message__.chat.id, message__.message_id)
+            elif lang == "russian":
+                ru_text = translator.translate(msg_clean, src='en', dest='ru').text
+                await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
 
             if "[1]" in msg:
                 await bot.send_photo(message__.chat.id, open("pussy/1.jpg", "rb"))
@@ -209,7 +202,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             await state.update_data(chat_memory=memory)
             return
         else:
-            buffer.append(LLAMA_GLOBAL.detokenize([token]).decode())
+            buffer.append(detok)
             if len(buffer) % 3 == 0:
 
                 msg = "".join(buffer)
