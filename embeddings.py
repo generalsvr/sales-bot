@@ -30,6 +30,39 @@ docs = [
     Document(
         page_content=DOC_8,
     ),
+    Document(
+        page_content=DOC_9,
+    ),
+    Document(
+        page_content=DOC_10,
+    ),
+    Document(
+        page_content=DOC_11,
+    ),
+    Document(
+        page_content=DOC_12,
+    ),
+    Document(
+        page_content=DOC_13,
+    ),
+    Document(
+        page_content=DOC_14,
+    ),
+    Document(
+        page_content=DOC_15,
+    ),
+    Document(
+        page_content=DOC_16,
+    ),
+    Document(
+        page_content=DOC_17,
+    ),
+    Document(
+        page_content=DOC_18,
+    ),
+    Document(
+        page_content=DOC_19,
+    ),
 ]
 
 db = Chroma.from_documents(docs, embeddings)
