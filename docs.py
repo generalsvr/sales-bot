@@ -175,3 +175,154 @@ Manager: Our information product offers a step-by-step guide to cryptocurrency a
 Client: Sounds interesting. Can you provide more information via email or schedule a phone call for tomorrow?
 Manager: "Great, I'm glad you're interested in the product. Then I'll connect you with the general manager, who can tell you more and decide on all the other nuances."
 """
+
+DOC_10 = """Objection: The customer is unsure about the value of the product.
+
+Possible User reaction: 
+1. "I'm not sure if this product is worth the investment."
+2. "What makes your product different from others in the market?"
+3. "I'm not convinced about the value your product can bring to me."
+
+Example Conversation:
+M: "Our product is designed to provide a comprehensive solution to your needs. It's not just about the product, but the value it brings to your life."
+C: "I'm not sure if this product is worth the investment."
+M: "I understand your concern. However, our product offers unique features that you won't find in other products. It's designed to save you time, increase your productivity, and ultimately, provide a return on your investment."
+C: "What makes your product different from others in the market?"
+M: "Our product stands out because of its unique features, user-friendly interface, and excellent customer support. We believe in providing value to our customers, and that's what sets us apart from the competition."
+"""
+
+DOC_11 = """Objection: The customer is unsure about the reliability of the product.
+
+Possible User reaction: 
+1. "How reliable is your product?"
+2. "What if the product doesn't work as expected?"
+3. "Do you offer any warranty or guarantee?"
+
+Example Conversation:
+M: "Our product is designed with reliability in mind. We also offer a warranty to ensure your peace of mind."
+C: "How reliable is your product?"
+M: "Our product is built to last. We use high-quality materials and follow strict quality control processes to ensure its reliability."
+C: "Do you offer any warranty or guarantee?"
+M: "Yes, we offer a one-year warranty on our product. If you encounter any issues, our customer support team is always ready to assist you."
+"""
+
+DOC_12 = """Objection: The customer is concerned about the complexity of the product.
+
+Possible User reaction: 
+1. "The product seems complicated to use."
+2. "I'm not very tech-savvy. Will I be able to use this product?"
+3. "Do you provide any training or support?"
+
+Example Conversation:
+M: "Our product is designed to be user-friendly. We also provide training and support to help you get started."
+C: "The product seems complicated to use."
+M: "I understand your concern. However, our product is designed with simplicity in mind. We also provide a user manual and video tutorials to guide you."
+C: "Do you provide any training or support?"
+M: "Yes, we provide training and 24/7 customer support. Our team is always ready to assist you."
+"""
+
+DOC_13 = """Objection: The customer is unsure about the effectiveness of the product.
+
+Possible User reaction: 
+1. "Does your product really work?"
+2. "I'm skeptical about the effectiveness of your product."
+3. "Can you provide any proof or testimonials?"
+
+Example Conversation:
+M: "Our product has been proven to be effective. We have numerous satisfied customers who can attest to its effectiveness."
+C: "Does your product really work?"
+M: "Yes, our product has been tested and proven to work. We have numerous testimonials from satisfied customers."
+C: "Can you provide any proof or testimonials?"
+M: "Absolutely, we can provide testimonials from our customers. We also have case studies that demonstrate the effectiveness of our product."
+"""
+
+
+DOC_14 = """Objection: The customer is worried about the security of the product.
+
+Possible User reaction: 
+1. "How secure is your product?"
+2. "What measures do you take to ensure the security of your product?"
+3. "I'm concerned about the safety of my data."
+
+Example Conversation:
+M: "We take security very seriously. Our product is designed with multiple layers of security to protect your data."
+C: "How secure is your product?"
+M: "Our product is built with advanced security features to protect your data. We also comply with all the necessary security standards."
+C: "What measures do you take to ensure the security of your product?"
+M: "We have a dedicated security team that constantly monitors and updates our security measures. We also conduct regular security audits to ensure the safety of your data."
+"""
+
+DOC_15 = """Objection: The customer is unsure about the need for the product.
+
+Possible User reaction: 
+1. "I don't think I need this product."
+2. "I'm not sure how this product can benefit me."
+3. "Why should I buy your product?"
+
+Example Conversation:
+M: "Our product is designed to make your life easier. It offers numerous benefits that can improve your productivity and efficiency."
+C: "I don't think I need this product."
+M: "I understand your concern. However, our product offers unique features that can save you time and effort. It's designed to improve your productivity and make your life easier."
+C: "Why should I buy your product?"
+M: "Our product stands out because of its unique features, user-friendly interface, and excellent customer support. We believe in providing value to our customers, and that's what sets us apart from the competition."
+"""
+
+DOC_16 = """Objection: The customer is worried about the product's compatibility with their existing systems.
+
+Possible User reaction: 
+1. "Will your product work with my existing systems?"
+2. "I'm concerned about the compatibility of your product."
+3. "Do I need to make any changes to my current setup to use your product?"
+
+Example Conversation:
+M: "Our product is designed to be compatible with a wide range of systems. We also offer support to help you integrate it with your existing setup."
+C: "Will your product work with my existing systems?"
+M: "Yes, our product is designed to work with a wide range of systems. We also provide support to help you integrate it with your existing setup."
+C: "Do I need to make any changes to my current setup to use your product?"
+M: "Our product is designed to integrate seamlessly with your existing setup. However, if any changes are required, our support team will guide you through the process."
+"""
+
+DOC_17 = """Objection: The customer is unsure about the product's long-term benefits.
+
+Possible User reaction: 
+1. "What are the long-term benefits of your product?"
+2. "Will this product provide value in the long run?"
+3. "Is this a one-time solution or will it benefit me in the future?"
+
+Example Conversation:
+M: "Our product is designed to provide long-term benefits. It's not just a one-time solution, but a tool that will continue to add value over time."
+C: "What are the long-term benefits of your product?"
+M: "Our product is designed to improve your productivity and efficiency. Over time, these improvements can lead to significant cost savings and higher profits."
+C: "Is this a one-time solution or will it benefit me in the future?"
+M: "Our product is designed to provide ongoing benefits. As you continue to use it, you'll find that it becomes an indispensable tool in your daily operations."
+"""
+
+DOC_18 = """Objection: The customer is concerned about the product's ease of use.
+
+Possible User reaction: 
+1. "Is your product easy to use?"
+2. "I'm not very tech-savvy. Will I be able to use your product?"
+3. "Do you provide any training or user manual?"
+
+Example Conversation:
+M: "Our product is designed to be user-friendly. We also provide comprehensive training and a user manual to help you get started."
+C: "Is your product easy to use?"
+M: "Yes, our product is designed with user-friendliness in mind. We've made it as intuitive as possible, and we also provide training to help you get started."
+C: "Do you provide any training or user manual?"
+M: "Absolutely, we provide comprehensive training and a detailed user manual. Our customer support team is also always ready to assist you if you have any questions."
+"""
+
+DOC_19 = """Objection: The customer is unsure about the product's integration capabilities.
+
+Possible User reaction: 
+1. "Can your product integrate with my existing software?"
+2. "I'm worried about the integration process. Is it complicated?"
+3. "Do you provide any support during the integration process?"
+
+Example Conversation:
+M: "Our product is designed to integrate seamlessly with a wide range of software. We also provide support during the integration process."
+C: "Can your product integrate with my existing software?"
+M: "Yes, our product is designed to integrate with a wide range of software. We've made the integration process as simple as possible."
+C: "Do you provide any support during the integration process?"
+M: "Absolutely, we provide comprehensive support during the integration process. Our team will guide you through each step to ensure a smooth transition."
+"""
