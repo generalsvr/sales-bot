@@ -10,5 +10,5 @@ services:
       - "8443:80"
     environment:
       - PYTHONUNBUFFERED=1
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=
     command: python bot.py
