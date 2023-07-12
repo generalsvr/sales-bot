@@ -1,6 +1,9 @@
 aiogram
-langchain
+langchain==0.0.150
 openai
+pydantic
 chromadb
 tiktoken
 llama-cpp-python
+typing-inspect==0.8.0
+typing_extensions==4.5.0

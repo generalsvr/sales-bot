@@ -1,7 +1,7 @@
-from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.schema import Document
 from docs import *
+from langchain.embeddings import OpenAIEmbeddings
 
 embeddings = OpenAIEmbeddings()
 

@@ -7,8 +7,8 @@ services:
     volumes:
       - .:/app
     ports:
-      - "80:80"
+      - "8443:80"
     environment:
       - PYTHONUNBUFFERED=1
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=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
     command: python bot.py

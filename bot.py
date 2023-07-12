@@ -6,7 +6,6 @@ from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from prompts import *
-from llama import load_llama
 from embeddings import search
 from langchain.prompts import (
     ChatPromptTemplate,
@@ -133,8 +132,6 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
     elif agent == "Advanced":
         llm = ChatOpenAI(temperature=0.3, model="gpt-4")
-    elif agent == "Llama":
-        llm = load_llama()
 
     memory = ConversationBufferMemory(return_messages=True)
     conversation = ConversationChain(memory=memory, prompt=prompt, llm=llm)
@@ -186,8 +183,6 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
     elif agent == "Advanced":
         llm = ChatOpenAI(temperature=0.3, model="gpt-4")
-    elif agent == "Llama":
-        llm = load_llama()
 
     # get state data
     data = await state.get_data()
