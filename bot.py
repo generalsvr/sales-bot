@@ -161,6 +161,8 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     agent = data.get("agent", "Basic")
     dialogue_style = data.get("style", "Formal")
 
+    SYSTEM_PROMPT = PROMPT_2.format(company_name="Аскона", company_business="продажа матрасов", company_values="высокое качество обслуживания", conversation_purpose="продать матрас", conversation_type="telegram chat")
+
     if dialogue_style == "Formal":
         full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
     elif dialogue_style == "Casual":
