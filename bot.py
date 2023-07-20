@@ -126,9 +126,6 @@ async def begin_conversation(message: types.Message, state: FSMContext):
             full_prompt
         ),
         SystemMessagePromptTemplate.from_template(
-            INIT_MSG
-        ),
-        SystemMessagePromptTemplate.from_template(
             f"Customer name is {message.from_user.first_name}. Initiate conversation in {lang}. Remember that you need to sell a product to the customer."
         ),
         MessagesPlaceholder(variable_name="history"),
