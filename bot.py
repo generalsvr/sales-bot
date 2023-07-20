@@ -179,9 +179,9 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         SystemMessagePromptTemplate.from_template(
             full_prompt 
         ),
-        SystemMessagePromptTemplate.from_template(
-            f"Knowledge base search results:\n{search(message.text)}"
-        ),
+        # SystemMessagePromptTemplate.from_template(
+        #     f"Knowledge base search results:\n{search(message.text)}"
+        # ),
         MessagesPlaceholder(variable_name="history"),
         HumanMessagePromptTemplate.from_template("{input}")
     ])
