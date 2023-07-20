@@ -1,3 +1,9 @@
+__import__('pysqlite3')
+import sys
+import os
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
