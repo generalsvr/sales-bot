@@ -108,7 +108,8 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     elif lang == "russian":
         message__ = await message.answer("⚡️ Начинаю новый диалог...")
 
-    SYSTEM_PROMPT = PROMPT_2.format(company_name="Сбербанк", company_business="банковские услуги", company_values="высокое качество обслуживания", conversation_purpose="продать кредит", conversation_type="telegram chat")
+    # SYSTEM_PROMPT = PROMPT_2.format(company_name="Сбербанк", company_business="банковские услуги", company_values="высокое качество обслуживания", conversation_purpose="продать кредит", conversation_type="telegram chat")
+    SYSTEM_PROMPT = PROMPT_2.format(company_name="Аскона", company_business="продажа матрасов", company_values="высокое качество обслуживания", conversation_purpose="продать матрас", conversation_type="telegram chat")
 
     if dialogue_style == "Formal":
         full_prompt = SYSTEM_PROMPT + FORMAL_DIALOGUE
