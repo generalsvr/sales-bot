@@ -185,7 +185,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         HumanMessagePromptTemplate.from_template("{input}")
     ])
 
-    print(prompt)
+    print("FULL PROMPT FOR SECOND : \n\n\n" + prompt)
 
     if agent == "Basic":
         llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo")
