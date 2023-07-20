@@ -7,6 +7,8 @@ WORKDIR /app
 # Add the current directory contents into the container at /app
 ADD . /app
 
+RUN pip install pysqlite3-binary
+
 RUN apt update && apt install build-essential -y
 
 # Install any needed packages specified in requirements.txt
