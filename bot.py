@@ -18,7 +18,7 @@ STOP_TOKENS = ["\n", "#", " #", "# "]
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
 dp = Dispatcher(bot, storage=MemoryStorage())
-LLAMA_GLOBAL = Llama(model_path="/airoboros-65b-gpt4-1.4.ggmlv3.q4_K_M.bin", n_gpu_layers=40, seed=-1, n_ctx=1024)
+LLAMA_GLOBAL = Llama(model_path="/llama-2-13b-guanaco-qlora.ggmlv3.q5_K_M.bin", n_gpu_layers=40, seed=-1, n_ctx=1024)
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
