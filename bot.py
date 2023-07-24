@@ -28,8 +28,8 @@ class StateMachine(StatesGroup):
 async def agents_handler(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     buttons = [
-        types.InlineKeyboardButton("Lisa (18, EN)", callback_data="lisa"),
-        types.InlineKeyboardButton("Маша (16, RU)", callback_data="maha")
+        types.InlineKeyboardButton("Lisa (18)", callback_data="lisa"),
+        types.InlineKeyboardButton("Маша (16)", callback_data="maha")
     ]
     keyboard.add(*buttons)
 
@@ -41,40 +41,40 @@ async def agents_handler(message: types.Message, state: FSMContext):
     elif lang == "russian":
         await bot.send_message(message.chat.id, "🤖 Выберите девочку:", reply_markup=keyboard)
 
-@dp.message_handler(Command('sampling'), state="*")
-async def agents_handler(message: types.Message, state: FSMContext):
-    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
-    buttons = [
-        types.InlineKeyboardButton("Top K", callback_data="topk"),
-        types.InlineKeyboardButton("Mirostat V2", callback_data="mirostat")
-    ]
-    keyboard.add(*buttons)
+# @dp.message_handler(Command('sampling'), state="*")
+# async def agents_handler(message: types.Message, state: FSMContext):
+#     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+#     buttons = [
+#         types.InlineKeyboardButton("Top K", callback_data="topk"),
+#         types.InlineKeyboardButton("Mirostat V2", callback_data="mirostat")
+#     ]
+#     keyboard.add(*buttons)
 
-    data = await state.get_data()
-    lang = data.get("language", "english")
+#     data = await state.get_data()
+#     lang = data.get("language", "english")
 
-    if lang == "english":
-        await bot.send_message(message.chat.id, "🎛 Choose a sampling method:", reply_markup=keyboard)
-    elif lang == "russian":
-        await bot.send_message(message.chat.id, "🎛 Выберите метод семплинга:", reply_markup=keyboard)
+#     if lang == "english":
+#         await bot.send_message(message.chat.id, "🎛 Choose a sampling method:", reply_markup=keyboard)
+#     elif lang == "russian":
+#         await bot.send_message(message.chat.id, "🎛 Выберите метод семплинга:", reply_markup=keyboard)
 
 
-@dp.message_handler(Command('language'), state="*")
-async def settings_handler(message: types.Message, state: FSMContext):
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
-    buttons = [
-        types.InlineKeyboardButton("🇷🇺 RU", callback_data="russian"),
-        types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
-    ]
-    keyboard.add(*buttons)
+# @dp.message_handler(Command('language'), state="*")
+# async def settings_handler(message: types.Message, state: FSMContext):
+#     keyboard = types.InlineKeyboardMarkup(row_width=1)
+#     buttons = [
+#         types.InlineKeyboardButton("🇷🇺 RU", callback_data="russian"),
+#         types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
+#     ]
+#     keyboard.add(*buttons)
 
-    data = await state.get_data()
-    lang = data.get("language", "english")
+#     data = await state.get_data()
+#     lang = data.get("language", "english")
 
-    if lang == "english":
-        await message.answer("Choose a language:", reply_markup=keyboard)
-    elif lang == "russian":
-        await message.answer("Выберите язык:", reply_markup=keyboard)
+#     if lang == "english":
+#         await message.answer("Choose a language:", reply_markup=keyboard)
+#     elif lang == "russian":
+#         await message.answer("Выберите язык:", reply_markup=keyboard)
 
 @dp.message_handler(Command('start'), state="*")
 async def start_command(message: types.Message, state: FSMContext):
@@ -142,16 +142,14 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
 
-@dp.message_handler(lambda message: message.text, state=StateMachine.CHAT)
+@dp.message_handler(lambda message: message.text, state="*")
 async def conversation_handler(message: types.Message, state: FSMContext):
 
     data = await state.get_data()
     lang = data.get("language", "english")
-    memory = data.get("chat_memory", None)
+    memory = data.get("chat_memory", "")
     girl = data.get("girl", "lisa")
     sampling = data.get("sampling", "top_k")
-
-    document = search(message.text)
 
     if girl == "lisa":
         formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
@@ -163,7 +161,7 @@ async def conversation_handler(message: types.Message, state: FSMContext):
     elif lang == "russian":
         message__ = await message.answer("💋 Шкура пишет...")
 
-    SYSTEM_PROMPT = formatted_prompt + document + "\n\nCONVERSATION 4:\n\n" + memory + "User: " +  message.text + "\nGirl:"
+    SYSTEM_PROMPT = formatted_prompt + memory + "User: " +  message.text + "\nGirl:"
 
     print("SYSTEM PROMPT \n\n", SYSTEM_PROMPT)
 
