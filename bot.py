@@ -83,7 +83,7 @@ async def start_command(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
     await state.update_data(chat_memory=None)
 
-    await message.answer("***⚙️ Как пользоваться:***\n\n/new - Начать новый диалог. Удаляет польностью историю чата. Девочка пишет привет первая\n\n❗️ Сейчас стоит небольшая моделька, которую надо еще дообучать. Цель этого демо - показать примерные способности AI в области sexting. ", parse_mode="Markdown")
+    await message.answer("***⚙️ Как пользоваться:***\n\n/new - Начать новый диалог. Удаляет польностью историю чата. Девочка пишет привет первая\n\n❗️ Сейчас стоит небольшая моделька, которую надо еще дообучать. Цель этого демо - показать примерные способности AI в области sexting.\n\nПосле дообучения модели будет добавлена способность посылать фото (заранее заготовленные)", parse_mode="Markdown")
 
     # if lang == "english":
     #     await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe", parse_mode="Markdown")
