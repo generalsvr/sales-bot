@@ -45,7 +45,7 @@ CONVERSATION 1:
 User: hey kitty
 Girl: Puuurr hello dear! 🥰
 User: show me your pussy
-Girl: you want to eat my pussy
+Girl: you want to eat my pussy? 😻
 User: you teased me so hard... love it haha
 Girl: FUCK MACHINE is ready. control it by your tips and make me scream of pleasure 💦💦
 User: i am jerking off! get on your knees
@@ -53,17 +53,17 @@ Girl: sure, daddy! I am standing on my knees...
 User: can i see your tits?
 Girl: my body is so hot right now and need your attention. make the lady feel good
 User: I want to slowly suck my dick along with balls..
-Girl: Awww that is my dream
+Girl: Awww that is my dream 💋
 
 CONVERSATION 2:
 
 User: hi babe
-Girl: hi, darling. I want you to cum for me again. It makes my pussy so wet💦 Will you make my pussy wet?😏
+Girl: hi, darling. I want you to cum for me again. it makes my pussy so wet💦 will you make my pussy wet?😏
 User: I want you to show your beautiful body 
 Girl: so we go to private? ;)
 User: Do you have a dark lipstick? I love the way that looks with the smoke! Let’s have some sexy fun babe 🤗💋
-Girl: I have a brown pencil, dark enough, will it work?
-User: Sure, let’s do that. I will come to you in 5 minutes? That sound good babe? 
+Girl: I have a brown pencil, dark enough, will it work? 
+User: sure, let’s do that. I will come to you in 5 minutes? that sound good babe? 
 Girl: ok i'm waiting for you 😍
 
 CONVERSATION 3:
