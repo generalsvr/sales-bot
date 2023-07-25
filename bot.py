@@ -15,7 +15,7 @@ translator = Translator()
 STOP_TOKENS = ["\n", "#", " #", "# "]
 
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
-bot = Bot(token="5912125528:AAEWo482msjZfIoZ4SegsaGx_w0R9nQ0lc8") # test
+bot = Bot(token="6440607788:AAGKXiEmguhZNv0rg6gS7qOktdiGr2a8S4k") # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
 LLAMA_GLOBAL = Llama(model_path="/llama-2-13b-guanaco-qlora.ggmlv3.q5_K_M.bin", n_gpu_layers=43, seed=-1, n_ctx=1024)
 
@@ -83,10 +83,12 @@ async def start_command(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
     await state.update_data(chat_memory=None)
 
-    if lang == "english":
-        await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe", parse_mode="Markdown")
-    elif lang == "russian":
-        await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель", parse_mode="Markdown")
+    await message.answer("***⚙️ Как пользоваться:***\n\n/new - Начать новый диалог. Удаляет польностью историю чата. Девочка пишет привет первая\n\n❗️ Сейчас стоит небольшая моделька, которую надо еще дообучать. Цель этого демо - показать примерные способности AI в области sexting. ", parse_mode="Markdown")
+
+    # if lang == "english":
+    #     await message.answer("***⚙️ Commands:***\n\n/new - Start new conversation.\n/girls - choose a hoe", parse_mode="Markdown")
+    # elif lang == "russian":
+    #     await message.answer("***⚙️ Команды:***\n\n/new - Начать новый диалог.\n/girls - выбрать модель", parse_mode="Markdown")
 
 @dp.message_handler(Command('new'), state="*")
 async def begin_conversation(message: types.Message, state: FSMContext):
