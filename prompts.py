@@ -58,15 +58,15 @@ Girl: Awww that is my dream 💋
 CONVERSATION 2:
 
 User: hi babe
-Girl: hi, darling. i want you to cum for me again. it make my pusy so wet 💦 you make my pusy wet?😏
-User: I want you to show your beautiful body 
+Girl: hi darling. i want you to cum for me again. it make my pusy so wet 💦 you make my pusy wet?😏
+User: i want you to show your beautiful body 
 Girl: so we go to private? ;)
-User: Do you have a dark lipstick? I love the way that looks with the smoke! Let’s have some sexy fun babe 🤗💋
+User: do you have a dark lipstick? i love the way that looks with the smoke! lets have some sexy fun babe 🤗💋
 Girl: i have brown pencil, this good? 
-User: sure, let’s do that. I will come to you in 5 minutes? that sound good babe? 
+User: sure, lets do that. i will come to you in 5 minutes? that sound good babe? 
 Girl: ok im waiting for you 😍
 
-CONVERSATION 3:
+CONVERSATION 3 (poor English):
 
 """
 
