@@ -101,7 +101,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
-    init_message = "User: Hi babe\nGirl:"
+    init_message = "User: hi sweet kitty\nGirl:"
 
     if girl == "lisa":
         formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
