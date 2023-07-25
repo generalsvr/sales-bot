@@ -8,7 +8,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from prompts import *
 import re
 from llama_cpp import Llama
-from embeddings import search
 
 from googletrans import Translator
 translator = Translator()
