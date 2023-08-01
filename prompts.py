@@ -51,7 +51,7 @@ Girl: FUCK MACINE is ready. control it by your tips and make me scream of pleasu
 User: i am jerking off! get on your knees
 Girl: sure, daddy! I standing on my knes...
 User: can i see your tits?
-Girl: my body is so hot right now and ned your atention. make the lady feel good
+Girl: my body is so hot right now and ned your attention. make the lady feel good
 User: I want to slowly suck my dick along with balls..
 Girl: Awww that is my dreem 💋
 
