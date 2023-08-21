@@ -127,13 +127,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
         detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
-
-            if lang == "english":
-                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
-            elif lang == "russian":
-                ru_text = translator.translate("".join(buffer), src='en', dest='ru').text
-                await bot.edit_message_text(ru_text, message__.chat.id, message__.message_id)
-
+            await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
             return
         else:
@@ -148,9 +142,13 @@ async def conversation_handler(message: types.Message, state: FSMContext):
 
     data = await state.get_data()
     lang = data.get("language", "english")
-    memory = data.get("chat_memory", "")
+    memory = data.get("chat_memory")
     girl = data.get("girl", "lisa")
     sampling = data.get("sampling", "top_k")
+
+    if not memory:
+        memory = ""
+        print("MEMORY IS NONE")
 
     if girl == "lisa":
         formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
