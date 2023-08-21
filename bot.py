@@ -121,19 +121,23 @@ async def begin_conversation(message: types.Message, state: FSMContext):
     else:
         kwargs = {"prompt" : SYSTEM_PROMPT, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True, "max_tokens" : 128}
 
-    print("SAMPLING: ", kwargs)
-
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
         detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
             print("FINISHED REASON ", detok)
-            await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+            try:
+                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+            except:
+                pass
             await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
             return
         else:
             buffer.append(detok)
             if len(buffer) % 3 == 0:
-                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+                try:
+                    await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+                except:
+                    pass
 
     await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
 
