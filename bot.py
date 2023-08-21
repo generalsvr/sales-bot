@@ -17,7 +17,7 @@ STOP_TOKENS = ["\n", "#", " #", "# "]
 # bot = Bot(token="6321687305:AAGQRd_nlp6CFO44gaq_xrqptWSqtdyW040") # prod
 bot = Bot(token="6440607788:AAGKXiEmguhZNv0rg6gS7qOktdiGr2a8S4k") # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
-LLAMA_GLOBAL = Llama(model_path="/root/llama-2-13b-guanaco-qlora.ggmlv3.q5_K_M.bin", n_gpu_layers=43, seed=-1, n_ctx=1536)
+LLAMA_GLOBAL = Llama(model_path="/root/airoboros-l2-13b-gpt4-1.4.1.ggmlv3.q5_K_M.bin", n_gpu_layers=43, seed=-1, n_ctx=1536)
 
 class StateMachine(StatesGroup):
     MAIN_MENU = State()
@@ -209,7 +209,10 @@ async def conversation_handler(message: types.Message, state: FSMContext):
         else:
             buffer += detok
             if len(buffer) % 3 == 0:
-                await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
+                try:
+                    await bot.edit_message_text(buffer, message__.chat.id, message__.message_id)
+                except:
+                    pass
 
 
     memory += "User: " + message.text + "\nGirl:" + buffer + "\n"
