@@ -101,7 +101,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
-    init_message = "User: hi swet kity 😘\nGirl:"
+    init_message = "User: hi sweet kitty 😘\nGirl:"
 
     if girl == "lisa":
         formatted_prompt = PORN_LLAMA_EN.format(bio=LISA_BIO, name="Lisa")
@@ -180,7 +180,6 @@ async def conversation_handler(message: types.Message, state: FSMContext):
             print("FINISHED REASON ", detok)
 
             memory += "User: " + message.text + "\nGirl:" + buffer + "\n"
-            print("MEMORY: ", memory)
             await state.update_data(chat_memory=memory)
 
             msg_clean = re.sub(r"\[.]", "", buffer)
