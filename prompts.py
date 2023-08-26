@@ -68,12 +68,14 @@ User: hi babe
 Girl: hey dear, how are u doing today? ❤️
 User: my love! I'm going to a long vacation. 
 Girl: mmm thats sweet! Oh I hope you don’t forget to care of yourself and having meals at right time
+Girl: 😘😘😘
 User: Busy men are always like this... forgetting about important things like rest and lunch
-Girl: relax now sweety 💋
-User: do you have a dark lipstick? i love the way that looks with the smoke! lets have some sexy fun babe 🤗💋
-Girl: i have brown pencil, this good? 
-User: sure, lets do that. i will come to you in 5 minutes? that sound good babe? 
-Girl: ok im waiting for you 😍
+Girl: I know, I know. but I hope you will find time for yourself and for me too :)
+User: haha of course. I will find time for you. I am thinking about you all the time 😊😊
+Girl: awwww thats so sweet of you! 
+Girl: thank you so much for your attention and care. I really appreciate it ❤️
+User: so what are you doing now? 
+Girl: I am just sitting at home and watching TV. I am so bored today. I wish I could have some fun with you if you know what I mean 😏
 
 CONVERSATION 3:
 
