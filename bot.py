@@ -155,6 +155,8 @@ async def begin_conversation_gen(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     keyboard.add(*buttons)
 
+    await message.answer("🤖 Генерируем диалог...", reply_markup=keyboard)
+
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
         detok = token["choices"][0]["text"]
         if detok in STOP_TOKENS:
