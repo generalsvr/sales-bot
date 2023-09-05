@@ -183,7 +183,7 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
 
     
     await bot.answer_callback_query(callback_query.id)
-    await bot.edit_message_text("✅ Saved", callback_query.message.chat.id, callback_query.message.message_id)
+    await bot.edit_message_text("✅ Saved\n\n/gen_data - New conversation", callback_query.message.chat.id, callback_query.message.message_id)
 
 @dp.message_handler(lambda message: message.text, state="*")
 async def conversation_handler(message: types.Message, state: FSMContext):
