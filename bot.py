@@ -141,6 +141,44 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory=init_message + "".join(buffer) + "\n")
 
+
+@dp.message_handler(Command('gen_data'), state="*")
+async def begin_conversation_gen(message: types.Message, state: FSMContext):
+    buffer = []
+    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True, "max_tokens" : 256}
+    # good or bad conversation keyboard
+    buttons = [
+        types.InlineKeyboardButton("👍 Good", callback_data="good"),
+        types.InlineKeyboardButton("👎 Bad", callback_data="bad")
+    ]
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
+    keyboard.add(*buttons)
+
+    for token in LLAMA_GLOBAL.create_completion(**kwargs):
+        detok = token["choices"][0]["text"]
+        if detok in STOP_TOKENS:
+            await state.update_data(data_gen="".join(buffer))
+            await bot.send_message(message.chat.id, "".join(buffer), reply_markup=keyboard)
+            return
+        
+        buffer.append(detok)
+
+# callback for good or bad conversation
+@dp.callback_query_handler(lambda c: c.data in ["good", "bad"], state="*")
+async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
+    # save data to file if good
+    data = await state.get_data()
+    data_gen = data.get("data_gen")
+    if callback_query.data == "good":
+        with open("good.txt", "a") as f:
+            f.write(data_gen + "\n")
+    elif callback_query.data == "bad":
+        with open("bad.txt", "a") as f:
+            f.write(data_gen + "\n")
+    
+    await bot.answer_callback_query(callback_query.id)
+    await bot.edit_message_text("✅ Saved", callback_query.message.chat.id, callback_query.message.message_id)
+
 @dp.message_handler(lambda message: message.text, state="*")
 async def conversation_handler(message: types.Message, state: FSMContext):
 
