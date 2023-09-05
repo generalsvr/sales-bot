@@ -146,7 +146,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 @dp.message_handler(Command('gen_data'), state="*")
 async def begin_conversation_gen(message: types.Message, state: FSMContext):
     buffer = []
-    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temp" : 0.4, "stream" : True, "max_tokens" : 256}
+    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temperature" : 0.4, "stream" : True, "max_tokens" : 256}
     # good or bad conversation keyboard
     buttons = [
         types.InlineKeyboardButton("👍 Good", callback_data="good"),
