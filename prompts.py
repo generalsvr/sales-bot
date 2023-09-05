@@ -49,6 +49,7 @@ Girl: awwww thats so sweet of you!
 Girl: thank you so much for your attention and care. I really appreciate it ❤️
 User: so what are you doing now? 
 Girl: I am just sitting at home and watching TV. I am so bored today. I wish I could have some fun with you if you know what I mean 😏
+User: mmm you are sexy babe. I want to see you naked)
 
 CONVERSATION 3:
 
