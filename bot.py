@@ -146,7 +146,7 @@ async def begin_conversation(message: types.Message, state: FSMContext):
 @dp.message_handler(Command('gen_data'), state="*")
 async def begin_conversation_gen(message: types.Message, state: FSMContext):
     buffer = []
-    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temperature" : 0.4, "stream" : True, "max_tokens" : 256}
+    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temperature" : 0.4, "stream" : True, "max_tokens" : 1024}
     # good or bad conversation keyboard
     buttons = [
         types.InlineKeyboardButton("👍 Good", callback_data="good"),
@@ -159,12 +159,11 @@ async def begin_conversation_gen(message: types.Message, state: FSMContext):
 
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
         detok = token["choices"][0]["text"]
-        if detok in STOP_TOKENS:
-            await state.update_data(data_gen="".join(buffer))
-            await bot.send_message(message.chat.id, "".join(buffer), reply_markup=keyboard)
-            return
-        
         buffer.append(detok)
+
+    await state.update_data(data_gen="".join(buffer))
+    await bot.send_message(message.chat.id, "".join(buffer), reply_markup=keyboard)
+        
 
 # callback for good or bad conversation
 @dp.callback_query_handler(lambda c: c.data in ["good", "bad"], state="*")
