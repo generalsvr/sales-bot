@@ -8,6 +8,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from prompts import *
 import re
 from llama_cpp import Llama
+import json
 
 from googletrans import Translator
 translator = Translator()
@@ -166,15 +167,19 @@ async def begin_conversation_gen(message: types.Message, state: FSMContext):
 # callback for good or bad conversation
 @dp.callback_query_handler(lambda c: c.data in ["good", "bad"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
-    # save data to file if good
+    # save data to file if good as jsonl {"text" : "User: ... \nGirl: ..."}
     data = await state.get_data()
     data_gen = data.get("data_gen")
+    
     if callback_query.data == "good":
-        with open("good.txt", "a") as f:
-            f.write(data_gen + "\n")
+        jsonl = {"text" : data_gen}
+        with open("good.jsonl", "a") as f:
+            f.write(json.dumps(jsonl) + "\n")
     elif callback_query.data == "bad":
-        with open("bad.txt", "a") as f:
-            f.write(data_gen + "\n")
+        jsonl = {"text" : data_gen}
+        with open("bad.jsonl", "a") as f:
+            f.write(json.dumps(jsonl) + "\n") 
+
     
     await bot.answer_callback_query(callback_query.id)
     await bot.edit_message_text("✅ Saved", callback_query.message.chat.id, callback_query.message.message_id)
