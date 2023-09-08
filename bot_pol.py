@@ -42,9 +42,9 @@ async def start_command(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
 
     if lang == "english":
-        await message.answer("<b>🇮🇩 Hello!</b>\n\nMy name is Ganjar Pranowo. Ask me anything", parse_mode="html")
+        await message.answer("<b>🇮🇩 Hello!</b>\n\nWelcome to your personal chat with Ganjar Pranowo, Governor of Central Java and upcoming Presidential Candidate for Indonesia 2024! Ask questions, gain insights, or discuss political issues directly with a leader who is ardently working for the development of society and the nation.", parse_mode="html")
     elif lang == "indonesian":
-        await message.answer("<b>🇮🇩 Halo!</b>\n\n Nama saya Ganjar Pranowo. Tanyakan apa saja padaku.", parse_mode="html")
+        await message.answer("<b>🇮🇩 Halo!</b>\n\nSelamat datang di obrolan pribadi Anda dengan Ganjar Pranowo, Gubernur Jawa Tengah dan Calon Presiden Indonesia 2024 mendatang! Ajukan pertanyaan, dapatkan wawasan, atau diskusikan isu-isu politik secara langsung dengan seorang pemimpin yang dengan penuh semangat bekerja untuk kemajuan masyarakat dan bangsa.", parse_mode="html")
         
     await state.update_data(chat_memory="")
 
