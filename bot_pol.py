@@ -35,6 +35,23 @@ async def start_command(message: types.Message, state: FSMContext):
     await message.answer("<b>🇮🇩 Hello!</b>\n\nMy name is Ganjar Pranowo. Ask me anything", parse_mode="html")
     await state.update_data(chat_memory="")
 
+@dp.message_handler(Command('language'), state="*")
+async def settings_handler(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("🇮🇩 ID", callback_data="indonesian"),
+        types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
+    ]
+    keyboard.add(*buttons)
+
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    if lang == "english":
+        await message.answer("Choose a language:", reply_markup=keyboard)
+    elif lang == "indonesian":
+        await message.answer("Pilih bahasa:", reply_markup=keyboard)
+
 @dp.message_handler(lambda message: message.text, state="*")
 async def new_command(message: types.Message, state: FSMContext):
     data = await state.get_data()
@@ -87,24 +104,6 @@ async def new_command(message: types.Message, state: FSMContext):
     )
 
     await bot.send_voice(message.chat.id, audio)
-
-
-@dp.message_handler(Command('language'), state="*")
-async def settings_handler(message: types.Message, state: FSMContext):
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
-    buttons = [
-        types.InlineKeyboardButton("🇮🇩 ID", callback_data="indonesian"),
-        types.InlineKeyboardButton("🇺🇸 EN", callback_data="english")
-    ]
-    keyboard.add(*buttons)
-
-    data = await state.get_data()
-    lang = data.get("language", "english")
-
-    if lang == "english":
-        await message.answer("Choose a language:", reply_markup=keyboard)
-    elif lang == "indonesian":
-        await message.answer("Pilih bahasa:", reply_markup=keyboard)
 
 @dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
