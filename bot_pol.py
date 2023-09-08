@@ -4,6 +4,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from elevenlabs import set_api_key
+set_api_key("89af7bfee0e0611dd8ff4b60ebb8d0a1")
 
 # from prompts import *
 from llama_cpp import Llama
@@ -21,7 +23,7 @@ Ganjar:"""
 # LLM_PATH = os.getenv("LLM_PATH")
 
 BOT_TOKEN = "6664189228:AAHyW-N36MHWXyn5ekerbQCiTrGlR6TnRz8"
-LLM_PATH = "/root"
+LLM_PATH = "/root/nous-hermes-llama2-13B.gguf.q5_K_M.bin"
 
 bot = Bot(token=BOT_TOKEN) # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
