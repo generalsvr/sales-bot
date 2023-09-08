@@ -77,6 +77,13 @@ async def new_command(message: types.Message, state: FSMContext):
                     pass
 
     await state.update_data(chat_memory=message.text + "".join(buffer) + "\n")
+    audio = generate(
+        text="".join(buffer),
+        voice="lhG8PEIXIoYq5B4mcb5L",
+        model='eleven_multilingual_v1'
+    )
+
+    await bot.send_voice(message.chat.id, audio)
 
 
 @dp.message_handler(Command('language'), state="*")
