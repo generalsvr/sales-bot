@@ -33,11 +33,11 @@ LLAMA_GLOBAL = Llama(model_path=LLM_PATH, n_gpu_layers=43, seed=-1, n_ctx=4096)
 @dp.message_handler(Command('start'), state="*")
 async def start_command(message: types.Message, state: FSMContext):
     await message.answer("<b>🇮🇩 Hello!</b>\n\nMy name is Ganjar Pranowo. Ask me anything", parse_mode="html")
+    await state.update_data(chat_memory="")
 
 @dp.message_handler(lambda message: message.text, state="*")
 async def new_command(message: types.Message, state: FSMContext):
     data = await state.get_data()
-    await state.update_data(chat_memory="")
 
     lang = data.get("language", "english")
 
