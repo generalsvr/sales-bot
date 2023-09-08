@@ -62,7 +62,7 @@ async def new_command(message: types.Message, state: FSMContext):
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             except:
                 pass
-            await state.update_data(chat_memory="User:" + message.text + "\nGanjar:" + "".join(buffer) + "\n")
+            await state.update_data(chat_memory=message.text + "\nGanjar:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
                 voice="lhG8PEIXIoYq5B4mcb5L",
@@ -79,7 +79,7 @@ async def new_command(message: types.Message, state: FSMContext):
                 except:
                     pass
 
-    await state.update_data(chat_memory="User:" + message.text + "\nGanjar:" + "".join(buffer) + "\n")
+    await state.update_data(chat_memory=message.text + "\nGanjar:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
         voice="lhG8PEIXIoYq5B4mcb5L",
