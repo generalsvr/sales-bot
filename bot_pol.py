@@ -49,7 +49,7 @@ async def new_command(message: types.Message, state: FSMContext):
     prompt = SYSTEM_PROMPT + message.text + "\nGanjar:"
 
     buffer = []
-    kwargs = {"prompt" : prompt, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True, "max_tokens" : 128}
+    kwargs = {"prompt" : prompt, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True, "max_tokens" : 256}
 
     for token in LLAMA_GLOBAL.create_completion(**kwargs):
         detok = token["choices"][0]["text"]
