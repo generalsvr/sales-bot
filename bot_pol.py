@@ -46,7 +46,7 @@ async def new_command(message: types.Message, state: FSMContext):
     elif lang == "indonesian":
         message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
 
-    SYSTEM_PROMPT = SYSTEM_PROMPT + message.text + "\nGanjar:"
+    SYSTEM_PROMPT += message.text + "\nGanjar:"
 
     buffer = []
     kwargs = {"prompt" : SYSTEM_PROMPT, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True, "max_tokens" : 128}
