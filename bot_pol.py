@@ -40,13 +40,14 @@ async def new_command(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
     lang = data.get("language", "english")
+    memory = data.get("chat_memory", "")
 
     if lang == "english":
         message__ = await bot.send_message(message.chat.id, "📝 Ganjar is typing...")
     elif lang == "indonesian":
         message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
 
-    prompt = SYSTEM_PROMPT + message.text + "\nGanjar:"
+    prompt = SYSTEM_PROMPT + memory + message.text + "\nGanjar:"
 
     print("PROMPT: \n\n", prompt)
 
