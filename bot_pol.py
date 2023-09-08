@@ -17,8 +17,11 @@ Ganjar Pranowo is a politician who is currently serving as Governor of Central J
 User: Hello Ganjar, how are you?
 Ganjar:"""
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-LLM_PATH = os.getenv("LLM_PATH")
+# BOT_TOKEN = os.getenv("BOT_TOKEN")
+# LLM_PATH = os.getenv("LLM_PATH")
+
+BOT_TOKEN = "6664189228:AAHyW-N36MHWXyn5ekerbQCiTrGlR6TnRz8"
+LLM_PATH = "/root"
 
 bot = Bot(token=BOT_TOKEN) # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
