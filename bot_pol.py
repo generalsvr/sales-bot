@@ -141,8 +141,6 @@ async def voice_handler(message: types.Message, state: FSMContext):
     file_info = await bot.get_file(message.voice.file_id)
     file = await bot.download_file(file_info.file_path)
 
-    print("VOICE FILE ID: ", file)
-
     with open(f"{file_id}.ogg", "wb") as f:
         f.write(file.read())
 
@@ -152,9 +150,9 @@ async def voice_handler(message: types.Message, state: FSMContext):
     segments, _ = whisper.transcribe(f"{file_id}.mp3")
     segments = list(segments) 
 
-    print("VOICE TEXT: ", segments)
+    print("VOICE TEXT: ", segments[0].text)
 
-    await message.answer(segments)
+    await message.answer(segments[0].text)
 
 
 @dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")
