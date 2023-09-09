@@ -38,7 +38,7 @@ STOP_TOKENS = ["\n", "#", " #", "# "]
 LLAMA_GLOBAL = Llama(model_path=LLM_PATH, n_gpu_layers=43, seed=-1, n_ctx=4096)
 
 from faster_whisper import WhisperModel
-model_size = "base"
+model_size = "large-v2"
 
 # Run on GPU with FP16
 whisper = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
