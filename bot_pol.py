@@ -166,9 +166,9 @@ async def voice_handler(message: types.Message, state: FSMContext):
         message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
 
     if lang == "english":
-        prompt = SYSTEM_PROMPT_EN + memory + segments[0].text + "\nGanjar:"
+        prompt = SYSTEM_PROMPT_EN + memory + "User:" + segments[0].text + "\nGanjar:"
     elif lang == "indonesian":
-        prompt = SYSTEM_PROMPT_ID + memory + segments[0].text + "\nGanjar:"
+        prompt = SYSTEM_PROMPT_ID + memory + "User:" + segments[0].text + "\nGanjar:"
 
     print("PROMPT: \n\n", prompt)
 
@@ -183,7 +183,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             except:
                 pass
-            await state.update_data(chat_memory=memory + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+            await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
                 voice="lhG8PEIXIoYq5B4mcb5L",
@@ -200,7 +200,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
                 except:
                     pass
 
-    await state.update_data(chat_memory=memory + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+    await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
         voice="lhG8PEIXIoYq5B4mcb5L",
