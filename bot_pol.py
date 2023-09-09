@@ -72,6 +72,25 @@ async def start_command(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
+# models command
+@dp.message_handler(Command('models'), state="*")
+async def models_handler(message: types.Message, state: FSMContext):
+    # choose from GPT and Neyra Politics
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    buttons = [
+        types.InlineKeyboardButton("🤖 GPT", callback_data="gpt"),
+        types.InlineKeyboardButton("🤖 Neyra Politics", callback_data="neyra")
+    ]
+    keyboard.add(*buttons)
+
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    if lang == "english":
+        await message.answer("Choose a model", reply_markup=keyboard)
+    elif lang == "indonesian":
+        await message.answer("Pilih model", reply_markup=keyboard)
+
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup(row_width=1)
