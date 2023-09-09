@@ -138,11 +138,11 @@ async def new_command(message: types.Message, state: FSMContext):
 async def voice_handler(message: types.Message, state: FSMContext):
     # save voice message
     file_id = message.voice.file_id
-    file = await bot.get_file(file_id)
-
-    with open(f"{file_id}.ogg", "wb") as f:
-        await file.download(out=f)
-
+    file_info = bot.get_file(message.voice.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+    with open('{file_id}.ogg', 'wb') as new_file:
+        new_file.write(downloaded_file)
+        
     # convert to mp3
     convert_ogg_to_mp3(f"{file_id}.ogg", f"{file_id}.mp3")
 
