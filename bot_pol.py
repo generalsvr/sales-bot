@@ -90,9 +90,9 @@ async def new_command(message: types.Message, state: FSMContext):
         message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
 
     if lang == "english":
-        prompt = SYSTEM_PROMPT_EN + memory + message.text + "\nGanjar:"
+        prompt = SYSTEM_PROMPT_EN + memory + "User:" + message.text + "\nGanjar:"
     elif lang == "indonesian":
-        prompt = SYSTEM_PROMPT_ID + memory + message.text + "\nGanjar:"
+        prompt = SYSTEM_PROMPT_ID + memory + "User:" + message.text + "\nGanjar:"
 
     print("PROMPT: \n\n", prompt)
 
