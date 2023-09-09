@@ -7,10 +7,14 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from elevenlabs import set_api_key
 set_api_key("89af7bfee0e0611dd8ff4b60ebb8d0a1")
 
+from whispercpp import Whisper
+w = Whisper('tiny')
+
 # from prompts import *
 from llama_cpp import Llama
 import os
 from elevenlabs import generate
+from pydub import AudioSegment
 
 SYSTEM_PROMPT_EN = """Below is the conversation between Indonesian politician Ganjar Pranowo and user. Ganjar answers are consice but informative.Language is English.
 
@@ -35,6 +39,11 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 STOP_TOKENS = ["\n", "#", " #", "# "]
 LLAMA_GLOBAL = Llama(model_path=LLM_PATH, n_gpu_layers=43, seed=-1, n_ctx=4096)
+
+def convert_ogg_to_mp3(ogg_file_path, mp3_file_path):
+    sound = AudioSegment.from_ogg(ogg_file_path)
+    sound.export(mp3_file_path, format="mp3")
+
 
 @dp.message_handler(Command('start'), state="*")
 async def start_command(message: types.Message, state: FSMContext):
@@ -120,6 +129,27 @@ async def new_command(message: types.Message, state: FSMContext):
     )
 
     await bot.send_voice(message.chat.id, audio)
+
+# voice message handler
+@dp.message_handler(content_types=types.ContentType.VOICE, state="*")
+async def voice_handler(message: types.Message, state: FSMContext):
+    # save voice message
+    file_id = message.voice.file_id
+    file = await bot.get_file(file_id)
+
+    with open(f"{file_id}.ogg", "wb") as f:
+        await file.download(out=f)
+
+    # convert to mp3
+    convert_ogg_to_mp3(f"{file_id}.ogg", f"{file_id}.mp3")
+
+    result = w.transcribe(f"{file_id}.mp3")
+    text = w.extract_text(result)
+
+    print("VOICE TEXT: ", text)
+
+    await message.answer(text)
+
 
 @dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")
 async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
