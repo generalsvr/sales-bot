@@ -136,6 +136,9 @@ async def new_command(message: types.Message, state: FSMContext):
 # voice message handler
 @dp.message_handler(content_types=types.ContentType.VOICE, state="*")
 async def voice_handler(message: types.Message, state: FSMContext):
+
+    msg_voice = await message.answer("***⚙️ Analyzing voice message...***", parse_mode="markdown")
+
     # save voice message
     file_id = message.voice.file_id
     file_info = await bot.get_file(message.voice.file_id)
@@ -150,7 +153,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
     segments, _ = whisper.transcribe(f"{file_id}.mp3")
     segments = list(segments) 
 
-    print("VOICE TEXT: ", segments[0].text)
+    await bot.edit_message_text("***🎙 Voice message:***\n\n" + segments[0].text, message.chat.id, msg_voice.message_id, parse_mode="markdown")
 
     data = await state.get_data()
 
