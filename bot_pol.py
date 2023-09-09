@@ -7,9 +7,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from elevenlabs import set_api_key
 set_api_key("89af7bfee0e0611dd8ff4b60ebb8d0a1")
 
-from whispercpp import Whisper
-w = Whisper('tiny')
-
 # from prompts import *
 from llama_cpp import Llama
 import os
@@ -39,6 +36,12 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 STOP_TOKENS = ["\n", "#", " #", "# "]
 LLAMA_GLOBAL = Llama(model_path=LLM_PATH, n_gpu_layers=43, seed=-1, n_ctx=4096)
+
+from faster_whisper import WhisperModel
+model_size = "base"
+
+# Run on GPU with FP16
+whisper = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
 
 def convert_ogg_to_mp3(ogg_file_path, mp3_file_path):
     sound = AudioSegment.from_ogg(ogg_file_path)
@@ -143,12 +146,12 @@ async def voice_handler(message: types.Message, state: FSMContext):
     # convert to mp3
     convert_ogg_to_mp3(f"{file_id}.ogg", f"{file_id}.mp3")
 
-    result = w.transcribe(f"{file_id}.mp3")
-    text = w.extract_text(result)
+    segments, _ = whisper.transcribe(f"{file_id}.mp3")
+    segments = list(segments) 
 
-    print("VOICE TEXT: ", text)
+    print("VOICE TEXT: ", segments)
 
-    await message.answer(text)
+    await message.answer(segments)
 
 
 @dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")

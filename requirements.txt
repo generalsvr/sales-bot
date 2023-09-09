@@ -5,3 +5,4 @@ tiktoken
 googletrans==3.1.0a0
 elevenlabs
 pydub
+faster-whisper
