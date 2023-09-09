@@ -25,6 +25,18 @@ Ganjar Pranowo is a politician who served as Governor of Central Java for two te
 
 """
 
+LEGAL_NOTICE = """***Legal Notice***
+
+This artificial intelligence (AI) bot, designed to represent Ganjar Pranowo, an illustrious politician from Indonesia. All interactions maintain a predictive modeling and not entirely accurate nature, and are exclusively based on publicly accessible information. As a result, this AI bot may occasionally generate misleading, incorrect, or incomplete information. Any errors, discrepancies or omissions should not be interpreted as a form of deception or misinformation.
+
+This AI bot is a tool for casual and entertainment purposes only. It absolutely does not provide professional, legal, financial or medical advice. The bot's responsiveness should not be misconstrued as personal or professional counsel. Users are advised to consult a qualified professional for such advice. 
+
+By utilizing this AI bot, users acknowledge respecting these terms and understanding that the information provided is impersonal and not adapted to any particular user’s needs or circumstances. 
+
+The creators, owners, and operators of this AI bot disclaim any responsibilities for the losses, damages or inconveniences users may experience as a result of using the AI bot. They cannot be held accountable for any decision made or action taken based on interaction with the AI bot.
+
+By engaging with the AI bot, users agree to this disclaimer and our terms and conditions in full. Users who do not agree to this legal notice should ideally refrain from using this bot. This disclaimer may be altered without notice, and it is the user's responsibility to periodically review this disclaimer."""
+
 # BOT_TOKEN = os.getenv("BOT_TOKEN")
 # LLM_PATH = os.getenv("LLM_PATH")
 
@@ -57,7 +69,7 @@ async def start_command(message: types.Message, state: FSMContext):
         await message.answer("<b>🇮🇩 Hello!</b>\n\nWelcome to your personal chat with Ganjar Pranowo, Ex-Governor of Central Java and upcoming Presidential Candidate for Indonesia 2024! Ask questions, gain insights, or discuss political issues directly with a leader who is ardently working for the development of society and the nation.", parse_mode="html")
     elif lang == "indonesian":
         await message.answer("<b>🇮🇩 Halo!</b>\n\nSelamat datang di obrolan pribadi Anda dengan Ganjar Pranowo, Mantan Gubernur Jawa Tengah dan Calon Presiden Indonesia 2024 yang akan datang! Ajukan pertanyaan, dapatkan wawasan, atau bahas masalah politik langsung dengan seorang pemimpin yang dengan tekun bekerja untuk pembangunan masyarakat dan bangsa.", parse_mode="html")
-        
+
     await state.update_data(chat_memory="")
 
 @dp.message_handler(Command('language'), state="*")
@@ -76,6 +88,17 @@ async def settings_handler(message: types.Message, state: FSMContext):
         await message.answer("Choose a language:", reply_markup=keyboard)
     elif lang == "indonesian":
         await message.answer("Pilih bahasa:", reply_markup=keyboard)
+
+# legal command
+@dp.message_handler(Command('legal'), state="*")
+async def legal_handler(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    lang = data.get("language", "english")
+
+    if lang == "english":
+        await message.answer(LEGAL_NOTICE, parse_mode="markdown")
+    elif lang == "indonesian":
+        await message.answer(LEGAL_NOTICE, parse_mode="markdown")
 
 @dp.message_handler(lambda message: message.text, state="*")
 async def new_command(message: types.Message, state: FSMContext):
