@@ -152,7 +152,60 @@ async def voice_handler(message: types.Message, state: FSMContext):
 
     print("VOICE TEXT: ", segments[0].text)
 
-    await message.answer(segments[0].text)
+    data = await state.get_data()
+
+    lang = data.get("language", "english")
+    memory = data.get("chat_memory", "")
+
+    if lang == "english":
+        message__ = await bot.send_message(message.chat.id, "📝 Ganjar is typing...")
+    elif lang == "indonesian":
+        message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
+
+    if lang == "english":
+        prompt = SYSTEM_PROMPT_EN + memory + segments[0].text + "\nGanjar:"
+    elif lang == "indonesian":
+        prompt = SYSTEM_PROMPT_ID + memory + segments[0].text + "\nGanjar:"
+
+    print("PROMPT: \n\n", prompt)
+
+    buffer = []
+    kwargs = {"prompt" : prompt, "top_k" : 40, "top_p" : 0.95, "temperature" : 0.4, "repeat_penalty" : 1.1, "stream" : True, "max_tokens" : 256}
+
+    for token in LLAMA_GLOBAL.create_completion(**kwargs):
+        detok = token["choices"][0]["text"]
+        if detok in STOP_TOKENS:
+            print("FINISHED REASON ", detok)
+            try:
+                await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+            except:
+                pass
+            await state.update_data(chat_memory=memory + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+            audio = generate(
+                text="".join(buffer),
+                voice="lhG8PEIXIoYq5B4mcb5L",
+                model='eleven_multilingual_v1'
+            )
+
+            await bot.send_voice(message.chat.id, audio)
+            return
+        else:
+            buffer.append(detok)
+            if len(buffer) % 3 == 0:
+                try:
+                    await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
+                except:
+                    pass
+
+    await state.update_data(chat_memory=memory + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+    audio = generate(
+        text="".join(buffer),
+        voice="lhG8PEIXIoYq5B4mcb5L",
+        model='eleven_multilingual_v1'
+    )
+
+    await bot.send_voice(message.chat.id, audio)
+
 
 
 @dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")
