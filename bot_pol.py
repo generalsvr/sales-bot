@@ -204,15 +204,17 @@ async def admin_handler(message: types.Message, state: FSMContext):
 
     for poll in polls:
         if poll[1] == "How important is freedom of press and speech to you?":
-            ans_1.append(poll[2][0])
+            ans_1.append(poll[2])
         elif poll[1] == "How would you rate the state of the Indonesian economy?":
-            ans_2.append(poll[2][0])
+            ans_2.append(poll[2])
         elif poll[1] == "Which economic issue concerns you the most?":
-            ans_3.append(poll[2][0])
+            ans_3.append(poll[2])
         elif poll[1] == "How important is addressing social inequality in Indonesia?":
-            ans_4.append(poll[2][0])
+            ans_4.append(poll[2])
         elif poll[1] == "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?":
-            ans_5.append(poll[2][0])
+            ans_5.append(poll[2])
+
+    print(ans_1, ans_2, ans_3, ans_4, ans_5)
             
 
     if lang == "english":
