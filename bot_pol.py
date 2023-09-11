@@ -34,7 +34,7 @@ conn = create_connection("bot.db")
 # create tables
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, username TEXT)")
-cur.execute("CREATE TABLE IF NOT EXISTS poll_answers (user_id INTEGER, poll_id INTEGER, option_id INTEGER, option_text TEXT)")
+cur.execute("CREATE TABLE IF NOT EXISTS polls (poll_id INTEGER PRIMARY KEY, question TEXT, answer TEXT)")
 
 SYSTEM_PROMPT_EN = """Below is the conversation between Indonesian politician Ganjar Pranowo and user. Ganjar answers are consice but informative. Language is English.
 
@@ -155,10 +155,16 @@ async def polls_handler(message: types.Message, state: FSMContext):
     await state.update_data(poll_index=0)
 
     for poll in POLLS:
+        # send poll with custom id
         if lang == "english":
-            await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
+            poll = await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
         elif lang == "indonesian":
-            await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
+            poll = await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
+        
+        # save poll id to database
+        cur = conn.cursor()
+        cur.execute("INSERT INTO polls VALUES (?, ?, ?)", (poll.poll.id, poll.poll.question, ""))
+        conn.commit()
         
 # poll answer handler
 @dp.poll_answer_handler()
@@ -167,7 +173,7 @@ async def poll_answer_handler(quiz_answer: types.PollAnswer):
 
     # save answer to database
     cur = conn.cursor()
-    cur.execute("INSERT INTO poll_answers VALUES (?, ?, ?, ?)", (quiz_answer.user.id, quiz_answer.poll_id, quiz_answer.option_ids[0], quiz_answer.option_ids[0]))
+    cur.execute("UPDATE polls SET answer=? WHERE poll_id=?", (quiz_answer.option_ids[0], quiz_answer.poll_id))
     conn.commit()
 
 
