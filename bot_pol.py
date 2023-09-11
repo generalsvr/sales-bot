@@ -146,6 +146,8 @@ async def settings_handler(message: types.Message, state: FSMContext):
     elif lang == "indonesian":
         await message.answer("Pilih bahasa:", reply_markup=keyboard)
 
+    await state.update_data(chat_memory="")
+
 # polls command
 @dp.message_handler(Command('polls'), state="*")
 async def polls_handler(message: types.Message, state: FSMContext):
@@ -165,6 +167,8 @@ async def polls_handler(message: types.Message, state: FSMContext):
         cur = conn.cursor()
         cur.execute("INSERT INTO polls VALUES (?, ?, ?)", (poll.poll.id, poll.poll.question, ""))
         conn.commit()
+
+    await state.update_data(chat_memory="")
         
 # poll answer handler
 @dp.poll_answer_handler()
@@ -180,6 +184,8 @@ async def poll_answer_handler(quiz_answer: types.PollAnswer):
 # admin command
 @dp.message_handler(Command('admin'), state="*")
 async def admin_handler(message: types.Message, state: FSMContext):
+    await state.update_data(chat_memory="")
+    
     # show stats
     data = await state.get_data()
     lang = data.get("language", "english")
@@ -205,7 +211,7 @@ async def admin_handler(message: types.Message, state: FSMContext):
     for poll in polls:
         if poll[2] == "":
             continue
-        
+
         if poll[1] == "How important is freedom of press and speech to you?":
             ans_1.append(int(poll[2]))
         elif poll[1] == "How would you rate the state of the Indonesian economy?":
