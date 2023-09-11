@@ -129,24 +129,9 @@ async def polls_handler(message: types.Message, state: FSMContext):
             await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
         
 # poll answer handler
-@dp.poll_answer_handler(state="*")
-async def poll_answer_handler(quiz_answer: types.PollAnswer, state: FSMContext):
+@dp.poll_answer_handler()
+async def poll_answer_handler(quiz_answer: types.PollAnswer):
     print(quiz_answer)
-
-    data = await state.get_data()
-    lang = data.get("language", "english")
-    poll_index = data.get("poll_index", 0)
-
-    if poll_index == len(POLLS):
-        if lang == "english":
-            await quiz_answer.user.send_message("📝 Thank you for your participation!")
-        elif lang == "indonesian":
-            await quiz_answer.user.send_message("📝 Terima kasih atas partisipasinya!")
-
-        return
-
-
-    await state.update_data(poll_index=poll_index + 1)
     
 
 # legal command
