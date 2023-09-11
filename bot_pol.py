@@ -190,15 +190,13 @@ async def admin_handler(message: types.Message, state: FSMContext):
     rows = cur.fetchall()
 
     # get polls stats
-    cur.execute("SELECT COUNT(*) FROM poll_answers")
-    rows2 = cur.fetchall()
-
+    cur.execute("SELECT COUNT(*) FROM polls")
+    polls = cur.fetchall()
 
     if lang == "english":
-        await message.answer("📊 Statistics:\n\nTotal users: " + str(rows[0][0]) + "\nTotal poll answers: " + str(rows2[0][0]))
+        await message.answer(f"Users: {rows[0][0]}\nPolls: {polls[0][0]}")
     elif lang == "indonesian":
-        await message.answer("📊 Statistik:\n\nTotal pengguna: " + str(rows[0][0]) + "\nTotal jawaban polling: " + str(rows2[0][0]))
-
+        await message.answer(f"Pengguna: {rows[0][0]}\nPolls: {polls[0][0]}")
     
 
 # legal command
