@@ -203,6 +203,9 @@ async def admin_handler(message: types.Message, state: FSMContext):
     ans_5 = []
 
     for poll in polls:
+        if poll[2] == "":
+            continue
+        
         if poll[1] == "How important is freedom of press and speech to you?":
             ans_1.append(int(poll[2]))
         elif poll[1] == "How would you rate the state of the Indonesian economy?":
