@@ -129,7 +129,7 @@ async def polls_handler(message: types.Message, state: FSMContext):
             await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
         
 # poll answer handler
-@dp.poll_answer_handler()
+@dp.poll_answer_handler(state="*")
 async def poll_answer_handler(quiz_answer: types.PollAnswer, state: FSMContext):
     print(quiz_answer)
 
