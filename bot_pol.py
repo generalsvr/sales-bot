@@ -196,14 +196,41 @@ async def admin_handler(message: types.Message, state: FSMContext):
     cur.execute("SELECT * FROM polls")
     polls = cur.fetchall()
 
+    ans_1 = []
+    ans_2 = []
+    ans_3 = []
+    ans_4 = []
+    ans_5 = []
+
     for poll in polls:
-        print(poll)
-        
+        if poll[1] == "How important is freedom of press and speech to you?":
+            ans_1.append(poll[2])
+        elif poll[1] == "How would you rate the state of the Indonesian economy?":
+            ans_2.append(poll[2])
+        elif poll[1] == "Which economic issue concerns you the most?":
+            ans_3.append(poll[2])
+        elif poll[1] == "How important is addressing social inequality in Indonesia?":
+            ans_4.append(poll[2])
+        elif poll[1] == "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?":
+            ans_5.append(poll[2])
+            
 
     if lang == "english":
         await message.answer(f"Users: {rows[0][0]}\nPolls: {polls_count[0][0]}")
+        await message.answer(f"Poll 1: {ans_1.count(0)} {ans_1.count(1)} {ans_1.count(2)} {ans_1.count(3)} {ans_1.count(4)}")
+        await message.answer(f"Poll 2: {ans_2.count(0)} {ans_2.count(1)} {ans_2.count(2)} {ans_2.count(3)} {ans_2.count(4)}")
+        await message.answer(f"Poll 3: {ans_3.count(0)} {ans_3.count(1)} {ans_3.count(2)} {ans_3.count(3)} {ans_3.count(4)}")
+        await message.answer(f"Poll 4: {ans_4.count(0)} {ans_4.count(1)} {ans_4.count(2)} {ans_4.count(3)} {ans_4.count(4)}")
+        await message.answer(f"Poll 5: {ans_5.count(0)} {ans_5.count(1)} {ans_5.count(2)} {ans_5.count(3)} {ans_5.count(4)}")
+
     elif lang == "indonesian":
         await message.answer(f"Pengguna: {rows[0][0]}\nPolls: {polls_count[0][0]}")
+        await message.answer(f"Poll 1: {ans_1.count(0)} {ans_1.count(1)} {ans_1.count(2)} {ans_1.count(3)} {ans_1.count(4)}")
+        await message.answer(f"Poll 2: {ans_2.count(0)} {ans_2.count(1)} {ans_2.count(2)} {ans_2.count(3)} {ans_2.count(4)}")
+        await message.answer(f"Poll 3: {ans_3.count(0)} {ans_3.count(1)} {ans_3.count(2)} {ans_3.count(3)} {ans_3.count(4)}")
+        await message.answer(f"Poll 4: {ans_4.count(0)} {ans_4.count(1)} {ans_4.count(2)} {ans_4.count(3)} {ans_4.count(4)}")
+        await message.answer(f"Poll 5: {ans_5.count(0)} {ans_5.count(1)} {ans_5.count(2)} {ans_5.count(3)} {ans_5.count(4)}")
+
     
 
 # legal command
