@@ -37,11 +37,11 @@ The creators, owners, and operators of this AI bot disclaim any responsibilities
 
 By engaging with the AI bot, users agree to this disclaimer and our terms and conditions in full. Users who do not agree to this legal notice should ideally refrain from using this bot. This disclaimer may be altered without notice, and it is the user's responsibility to periodically review this disclaimer."""
 
-POLLS = {"text" : "How important is freedom of press and speech to you?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"],
-         "text" : "How would you rate the state of the Indonesian economy?", "options" : ["Excellent", "Good", "Fair", "Poor", "Very poor"],
-         "text" : "Which economic issue concerns you the most?", "options" : ["Unemployment and job availability", "Inflation and rising costs of living", "Corruption and misuse of public funds", "Foreign investments and trade relations", "Income inequality and social welfare"],
-         "text" : "How important is addressing social inequality in Indonesia?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"],
-         "text" : "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?", "options" : ["Singapore", "Malaysia", "Thailand", "Australia", "Philippines", "Others"],}
+POLLS = [{"text" : "How important is freedom of press and speech to you?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"]},
+         {"text" : "How would you rate the state of the Indonesian economy?", "options" : ["Excellent", "Good", "Fair", "Poor", "Very poor"]},
+         {"text" : "Which economic issue concerns you the most?", "options" : ["Unemployment and job availability", "Inflation and rising costs of living", "Corruption and misuse of public funds", "Foreign investments and trade relations", "Income inequality and social welfare"]},
+         {"text" : "How important is addressing social inequality in Indonesia?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"]},
+         {"text" : "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?", "options" : ["Singapore", "Malaysia", "Thailand", "Australia", "Philippines", "Others"]}]
 
 # BOT_TOKEN = os.getenv("BOT_TOKEN")
 # LLM_PATH = os.getenv("LLM_PATH")
