@@ -37,6 +37,12 @@ The creators, owners, and operators of this AI bot disclaim any responsibilities
 
 By engaging with the AI bot, users agree to this disclaimer and our terms and conditions in full. Users who do not agree to this legal notice should ideally refrain from using this bot. This disclaimer may be altered without notice, and it is the user's responsibility to periodically review this disclaimer."""
 
+POLLS = {"text" : "How important is freedom of press and speech to you?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"],
+         "text" : "How would you rate the state of the Indonesian economy?", "options" : ["Excellent", "Good", "Fair", "Poor", "Very poor"],
+         "text" : "Which economic issue concerns you the most?", "options" : ["Unemployment and job availability", "Inflation and rising costs of living", "Corruption and misuse of public funds", "Foreign investments and trade relations", "Income inequality and social welfare"],
+         "text" : "How important is addressing social inequality in Indonesia?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"],
+         "text" : "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?", "options" : ["Singapore", "Malaysia", "Thailand", "Australia", "Philippines", "Others"],}
+
 # BOT_TOKEN = os.getenv("BOT_TOKEN")
 # LLM_PATH = os.getenv("LLM_PATH")
 
@@ -107,6 +113,25 @@ async def settings_handler(message: types.Message, state: FSMContext):
         await message.answer("Choose a language:", reply_markup=keyboard)
     elif lang == "indonesian":
         await message.answer("Pilih bahasa:", reply_markup=keyboard)
+
+# polls command
+@dp.message_handler(Command('polls'), state="*")
+async def polls_handler(message: types.Message, state: FSMContext):
+    # send polls
+    data = await state.get_data()
+    lang = data.get("language", "english")
+    await state.update_data(poll_index=0)
+
+    for poll in POLLS:
+        if lang == "english":
+            await message.answer_poll(question=POLLS[poll]["text"], options=POLLS[poll]["options"], is_anonymous=False)
+        elif lang == "indonesian":
+            await message.answer_poll(question=POLLS[poll]["text"], options=POLLS[poll]["options"], is_anonymous=False)
+        
+# poll answer handler
+@dp.poll_answer_handler()
+async def poll_answer_handler(quiz_answer: types.PollAnswer):
+    print(quiz_answer)
 
 # legal command
 @dp.message_handler(Command('legal'), state="*")
