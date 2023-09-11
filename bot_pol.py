@@ -13,6 +13,24 @@ import os
 from elevenlabs import generate
 from pydub import AudioSegment
 
+# sqlite 
+import sqlite3
+from sqlite3 import Error
+
+# connect to database
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file, check_same_thread=False)
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+    return conn
+    
+
+conn = create_connection("bot.db")
+
 SYSTEM_PROMPT_EN = """Below is the conversation between Indonesian politician Ganjar Pranowo and user. Ganjar answers are consice but informative. Language is English.
 
 Ganjar Pranowo is a politician who served as Governor of Central Java for two terms from 2013 to 2023. He was previously a member of the People's Legislative Assembly from the PDI Perjuangan faction. He is also serving as Chairperson of the Gadjah Mada University Alumni Family and the Indonesian Regional Public Radio TV Association. Ganjar has been appointed by PDIP as a candidate for President of Indonesia in 2024. He was born to a simple family in a village on the slopes of Mount Lawu and has five siblings. He attended SMP Negeri 1 Kutoarjo and SMA Bopkri 1 Yogyakarta. Ganjar holds a master's degree in Political Science from the Faculty of Social and Political Sciences, University of Indonesia. He initially worked at an HRD consulting agency in Jakarta before choosing a career in politics through the PDI-P Party led by Megawati Sukarnoputri. Ganjar Pranowo, the Governor of Central Java, implemented several policies and initiatives during his leadership. He applied credit financing for MSMEs with low interest rates and no collateral or administration fees, controlled the distribution of gratuities in the government, initiated a zakat program for state civil servants, launched a disaster-resilient village formation program, planned to build a modern hospital, issued farmer cards to prevent abuse of authority, and took quick steps to handle the COVID-19 pandemic. Ganjar is considered a leader who works with heart for the benefit of society. Ganjar Pranowo is officially nominated as a candidate for President of Indonesia by Megawati Soekarnoputri in 2023. He is married to Siti Atikah Supriyanti and they have one son who is studying at UGM. Both Ganjar and Atikoh have a hobby of sports and often participate in marathon and bicycle activities. He is considered a religious figure and has a team of volunteers who donate loudspeakers to mosques and Islamic boarding schools. Ganjar is also working on the development of a halal hospital in Central Java and has received support from religious scholars.
@@ -70,6 +88,15 @@ def convert_ogg_to_mp3(ogg_file_path, mp3_file_path):
 async def start_command(message: types.Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("language", "english")
+
+    # save new user to database if not exists
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE user_id=?", (message.from_user.id,))
+    rows = cur.fetchall()
+
+    if len(rows) == 0:
+        cur.execute("INSERT INTO users VALUES (?, ?, ?, ?)", (message.from_user.id, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
+        conn.commit()
 
     if lang == "english":
         await message.answer("<b>🇮🇩 Hello!</b>\n\nWelcome to your personal chat with Ganjar Pranowo, Ex-Governor of Central Java and upcoming Presidential Candidate for Indonesia 2024!\n\nAsk questions, gain insights, or discuss political issues directly with a leader who is ardently working for the development of society and the nation.", parse_mode="html")
@@ -132,6 +159,35 @@ async def polls_handler(message: types.Message, state: FSMContext):
 @dp.poll_answer_handler()
 async def poll_answer_handler(quiz_answer: types.PollAnswer):
     print(quiz_answer)
+
+    # save answer to database
+    cur = conn.cursor()
+    cur.execute("INSERT INTO poll_answers VALUES (?, ?, ?, ?)", (quiz_answer.user.id, quiz_answer.poll_id, quiz_answer.option_ids[0], quiz_answer.option_ids[0]))
+    conn.commit()
+
+
+# admin command
+@dp.message_handler(Command('admin'), state="*")
+async def admin_handler(message: types.Message, state: FSMContext):
+    # show stats
+    data = await state.get_data()
+    lang = data.get("language", "english")
+    
+    
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM users")
+    rows = cur.fetchall()
+
+    # get polls stats
+    cur.execute("SELECT COUNT(*) FROM poll_answers")
+    rows2 = cur.fetchall()
+
+
+    if lang == "english":
+        await message.answer("📊 Statistics:\n\nTotal users: " + str(rows[0][0]) + "\nTotal poll answers: " + str(rows2[0][0]))
+    elif lang == "indonesian":
+        await message.answer("📊 Statistik:\n\nTotal pengguna: " + str(rows[0][0]) + "\nTotal jawaban polling: " + str(rows2[0][0]))
+
     
 
 # legal command
