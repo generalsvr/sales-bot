@@ -87,10 +87,7 @@ async def start_command(message: types.Message, state: FSMContext):
         cur.execute("INSERT INTO users VALUES (?, ?, ?, ?)", (message.from_user.id, message.from_user.first_name, message.from_user.last_name, message.from_user.username))
         conn.commit()
 
-    if lang == "english":
-        await message.answer("<b>🇮🇩 Hello!</b>\n\nWelcome to your personal chat with Ganjar Pranowo, Ex-Governor of Central Java and upcoming Presidential Candidate for Indonesia 2024!\n\nAsk questions, gain insights, or discuss political issues directly with a leader who is ardently working for the development of society and the nation.", parse_mode="html")
-    elif lang == "indonesian":
-        await message.answer("<b>🇮🇩 Halo!</b>\n\nSelamat datang di obrolan pribadi Anda dengan Ganjar Pranowo, Mantan Gubernur Jawa Tengah dan Calon Presiden Indonesia 2024 yang akan datang!\n\nAjukan pertanyaan, dapatkan wawasan, atau bahas masalah politik langsung dengan seorang pemimpin yang dengan tekun bekerja untuk pembangunan masyarakat dan bangsa.", parse_mode="html")
+    await message.answer(f"<b>Hello, {message.from_user.first_name}!</b>\n\nI'm Eva, a chatbot 🔞", parse_mode="html")
 
     await state.update_data(chat_memory="")
 
@@ -161,7 +158,7 @@ async def new_command(message: types.Message, state: FSMContext):
             await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGirl:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
-                voice="lhG8PEIXIoYq5B4mcb5L",
+                voice="Eva",
                 model='eleven_multilingual_v1'
             )
 
@@ -178,7 +175,7 @@ async def new_command(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGirl:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
-        voice="lhG8PEIXIoYq5B4mcb5L",
+        voice="Eva",
         model='eleven_multilingual_v1'
     )
 
@@ -230,7 +227,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
             await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGirl:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
-                voice="lhG8PEIXIoYq5B4mcb5L",
+                voice="Eva",
                 model='eleven_multilingual_v1'
             )
 
@@ -247,7 +244,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
     await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGirl:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
-        voice="lhG8PEIXIoYq5B4mcb5L",
+        voice="Eva",
         model='eleven_multilingual_v1'
     )
 
