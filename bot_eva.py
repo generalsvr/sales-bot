@@ -146,7 +146,7 @@ async def new_command(message: types.Message, state: FSMContext):
 
     message__ = await bot.send_message(message.chat.id, "📝 Eva is typing...")
 
-    prompt = SYSTEM_PROMPT_EN + memory + "User:" + message.text + "\nGirl:"
+    prompt = PORN_LLAMA_EN + memory + "User:" + message.text + "\nGirl:"
 
     print("PROMPT: \n\n", prompt)
 
@@ -215,7 +215,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
     memory = data.get("chat_memory", "")
 
     message__ = await bot.send_message(message.chat.id, "📝 Eva is typing...")
-    prompt = SYSTEM_PROMPT_EN + memory + "User:" + segments[0].text + "\nGirl:"
+    prompt = PORN_LLAMA_EN + memory + "User:" + segments[0].text + "\nGirl:"
 
     print("PROMPT: \n\n", prompt)
 
