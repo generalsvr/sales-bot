@@ -91,6 +91,12 @@ async def start_command(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
+@dp.message_handler(Command('new'), state="*")
+async def new_command(message: types.Message, state: FSMContext):
+    # clear chat memory
+    await state.update_data(chat_memory="")
+    await message.answer("History cleared!")
+
 @dp.message_handler(Command('gen_data'), state="*")
 async def begin_conversation_gen(message: types.Message, state: FSMContext):
     buffer = []
