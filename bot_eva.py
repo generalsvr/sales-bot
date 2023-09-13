@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils import executor
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from elevenlabs import set_api_key
-set_api_key("89af7bfee0e0611dd8ff4b60ebb8d0a1")
+set_api_key("4f487e2bc21c45757b27e3fbd7367c78")
 
 # from prompts import *
 from llama_cpp import Llama
@@ -16,6 +16,8 @@ from pydub import AudioSegment
 # sqlite 
 import sqlite3
 from sqlite3 import Error
+
+from prompts import PORN_LLAMA_EN
 
 # connect to database
 def create_connection(db_file):
@@ -48,29 +50,11 @@ Ganjar Pranowo is a politician who served as Governor of Central Java for two te
 
 """
 
-LEGAL_NOTICE = """***Legal Notice***
-
-This artificial intelligence (AI) bot, designed to represent Ganjar Pranowo, an illustrious politician from Indonesia. All interactions maintain a predictive modeling and not entirely accurate nature, and are exclusively based on publicly accessible information. As a result, this AI bot may occasionally generate misleading, incorrect, or incomplete information. Any errors, discrepancies or omissions should not be interpreted as a form of deception or misinformation.
-
-This AI bot is a tool for casual and entertainment purposes only. It absolutely does not provide professional, legal, financial or medical advice. The bot's responsiveness should not be misconstrued as personal or professional counsel. Users are advised to consult a qualified professional for such advice. 
-
-By utilizing this AI bot, users acknowledge respecting these terms and understanding that the information provided is impersonal and not adapted to any particular user’s needs or circumstances. 
-
-The creators, owners, and operators of this AI bot disclaim any responsibilities for the losses, damages or inconveniences users may experience as a result of using the AI bot. They cannot be held accountable for any decision made or action taken based on interaction with the AI bot.
-
-By engaging with the AI bot, users agree to this disclaimer and our terms and conditions in full. Users who do not agree to this legal notice should ideally refrain from using this bot. This disclaimer may be altered without notice, and it is the user's responsibility to periodically review this disclaimer."""
-
-POLLS = [{"text" : "How important is freedom of press and speech to you?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"]},
-         {"text" : "How would you rate the state of the Indonesian economy?", "options" : ["Excellent", "Good", "Fair", "Poor", "Very poor"]},
-         {"text" : "Which economic issue concerns you the most?", "options" : ["Unemployment and job availability", "Inflation and rising costs of living", "Corruption and misuse of public funds", "Foreign investments and trade relations", "Income inequality and social welfare"]},
-         {"text" : "How important is addressing social inequality in Indonesia?", "options" : ["Very important", "Important", "Neutral", "Not very important", "Not important at all"]},
-         {"text" : "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?", "options" : ["Singapore", "Malaysia", "Thailand", "Australia", "Philippines", "Others"]}]
-
 # BOT_TOKEN = os.getenv("BOT_TOKEN")
 # LLM_PATH = os.getenv("LLM_PATH")
 
-BOT_TOKEN = "6664189228:AAHyW-N36MHWXyn5ekerbQCiTrGlR6TnRz8"
-LLM_PATH = "/root/airoboros-l2-70b-2.1.Q4_K_M.gguf"
+BOT_TOKEN = "6440607788:AAGKXiEmguhZNv0rg6gS7qOktdiGr2a8S4k"
+LLM_PATH = "/root/nous-hermes-llama2-13B.gguf.q5_K_M.bin"
 
 bot = Bot(token=BOT_TOKEN) # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -110,24 +94,26 @@ async def start_command(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
-# models command
-@dp.message_handler(Command('models'), state="*")
-async def models_handler(message: types.Message, state: FSMContext):
-    # choose from GPT and Neyra Politics
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
+@dp.message_handler(Command('gen_data'), state="*")
+async def begin_conversation_gen(message: types.Message, state: FSMContext):
+    buffer = []
+    kwargs = {"prompt" : PORN_LLAMA_EN, "mirostat_mode" : 2, "temperature" : 0.4, "stream" : True, "max_tokens" : 1024}
+    # good or bad conversation keyboard
     buttons = [
-        types.InlineKeyboardButton("🤖 GPT", callback_data="gpt"),
-        types.InlineKeyboardButton("🤖 Neyra Politics", callback_data="neyra")
+        types.InlineKeyboardButton("👍 Good", callback_data="good"),
+        types.InlineKeyboardButton("👎 Bad", callback_data="bad")
     ]
+    keyboard = types.InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     keyboard.add(*buttons)
 
-    data = await state.get_data()
-    lang = data.get("language", "english")
+    await message.answer("🤖 Генерируем диалог (пару минут)...")
 
-    if lang == "english":
-        await message.answer("Choose a model", reply_markup=keyboard)
-    elif lang == "indonesian":
-        await message.answer("Pilih model", reply_markup=keyboard)
+    for token in LLAMA_GLOBAL.create_completion(**kwargs):
+        detok = token["choices"][0]["text"]
+        buffer.append(detok)
+
+    await state.update_data(data_gen="".join(buffer))
+    await bot.send_message(message.chat.id, "".join(buffer), reply_markup=keyboard)
 
 @dp.message_handler(Command('language'), state="*")
 async def settings_handler(message: types.Message, state: FSMContext):
@@ -148,113 +134,6 @@ async def settings_handler(message: types.Message, state: FSMContext):
 
     await state.update_data(chat_memory="")
 
-# polls command
-@dp.message_handler(Command('polls'), state="*")
-async def polls_handler(message: types.Message, state: FSMContext):
-    # send polls
-    data = await state.get_data()
-    lang = data.get("language", "english")
-    await state.update_data(poll_index=0)
-
-    for poll in POLLS:
-        # send poll with custom id
-        if lang == "english":
-            poll = await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
-        elif lang == "indonesian":
-            poll = await message.answer_poll(question=poll["text"], options=poll["options"], is_anonymous=False)
-        
-        # save poll id to database
-        cur = conn.cursor()
-        cur.execute("INSERT INTO polls VALUES (?, ?, ?)", (poll.poll.id, poll.poll.question, ""))
-        conn.commit()
-
-    await state.update_data(chat_memory="")
-        
-# poll answer handler
-@dp.poll_answer_handler()
-async def poll_answer_handler(quiz_answer: types.PollAnswer):
-    print(quiz_answer)
-
-    # save answer to database
-    cur = conn.cursor()
-    cur.execute("UPDATE polls SET answer=? WHERE poll_id=?", (quiz_answer.option_ids[0], quiz_answer.poll_id))
-    conn.commit()
-
-
-# admin command
-@dp.message_handler(Command('admin'), state="*")
-async def admin_handler(message: types.Message, state: FSMContext):
-    await state.update_data(chat_memory="")
-
-    # show stats
-    data = await state.get_data()
-    lang = data.get("language", "english")
-    
-    
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM users")
-    rows = cur.fetchall()
-
-    # get polls stats
-    cur.execute("SELECT COUNT(*) FROM polls")
-    polls_count = cur.fetchall()
-
-    cur.execute("SELECT * FROM polls")
-    polls = cur.fetchall()
-
-    ans_1 = []
-    ans_2 = []
-    ans_3 = []
-    ans_4 = []
-    ans_5 = []
-
-    for poll in polls:
-        if poll[2] == "":
-            continue
-
-        if poll[1] == "How important is freedom of press and speech to you?":
-            ans_1.append(int(poll[2]))
-        elif poll[1] == "How would you rate the state of the Indonesian economy?":
-            ans_2.append(int(poll[2]))
-        elif poll[1] == "Which economic issue concerns you the most?":
-            ans_3.append(int(poll[2]))
-        elif poll[1] == "How important is addressing social inequality in Indonesia?":
-            ans_4.append(int(poll[2]))
-        elif poll[1] == "Which neighboring country should Indonesia prioritize in strengthening diplomatic and economic ties?":
-            ans_5.append(int(poll[2]))
-
-    print(ans_1, ans_2, ans_3, ans_4, ans_5)
-            
-
-    if lang == "english":
-        await message.answer(f"Users: {rows[0][0]}\nPolls: {polls_count[0][0]}")
-        await message.answer(f"Poll 1: {ans_1.count(0)} {ans_1.count(1)} {ans_1.count(2)} {ans_1.count(3)} {ans_1.count(4)}")
-        await message.answer(f"Poll 2: {ans_2.count(0)} {ans_2.count(1)} {ans_2.count(2)} {ans_2.count(3)} {ans_2.count(4)}")
-        await message.answer(f"Poll 3: {ans_3.count(0)} {ans_3.count(1)} {ans_3.count(2)} {ans_3.count(3)} {ans_3.count(4)}")
-        await message.answer(f"Poll 4: {ans_4.count(0)} {ans_4.count(1)} {ans_4.count(2)} {ans_4.count(3)} {ans_4.count(4)}")
-        await message.answer(f"Poll 5: {ans_5.count(0)} {ans_5.count(1)} {ans_5.count(2)} {ans_5.count(3)} {ans_5.count(4)}")
-
-    elif lang == "indonesian":
-        await message.answer(f"Pengguna: {rows[0][0]}\nPolls: {polls_count[0][0]}")
-        await message.answer(f"Poll 1: {ans_1.count(0)} {ans_1.count(1)} {ans_1.count(2)} {ans_1.count(3)} {ans_1.count(4)}")
-        await message.answer(f"Poll 2: {ans_2.count(0)} {ans_2.count(1)} {ans_2.count(2)} {ans_2.count(3)} {ans_2.count(4)}")
-        await message.answer(f"Poll 3: {ans_3.count(0)} {ans_3.count(1)} {ans_3.count(2)} {ans_3.count(3)} {ans_3.count(4)}")
-        await message.answer(f"Poll 4: {ans_4.count(0)} {ans_4.count(1)} {ans_4.count(2)} {ans_4.count(3)} {ans_4.count(4)}")
-        await message.answer(f"Poll 5: {ans_5.count(0)} {ans_5.count(1)} {ans_5.count(2)} {ans_5.count(3)} {ans_5.count(4)}")
-
-    
-
-# legal command
-@dp.message_handler(Command('legal'), state="*")
-async def legal_handler(message: types.Message, state: FSMContext):
-    data = await state.get_data()
-    lang = data.get("language", "english")
-
-    if lang == "english":
-        await message.answer(LEGAL_NOTICE, parse_mode="markdown")
-    elif lang == "indonesian":
-        await message.answer(LEGAL_NOTICE, parse_mode="markdown")
-
 @dp.message_handler(lambda message: message.text, state="*")
 async def new_command(message: types.Message, state: FSMContext):
     data = await state.get_data()
@@ -262,15 +141,9 @@ async def new_command(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
     memory = data.get("chat_memory", "")
 
-    if lang == "english":
-        message__ = await bot.send_message(message.chat.id, "📝 Ganjar is typing...")
-    elif lang == "indonesian":
-        message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
+    message__ = await bot.send_message(message.chat.id, "📝 Eva is typing...")
 
-    if lang == "english":
-        prompt = SYSTEM_PROMPT_EN + memory + "User:" + message.text + "\nGanjar:"
-    elif lang == "indonesian":
-        prompt = SYSTEM_PROMPT_ID + memory + "User:" + message.text + "\nGanjar:"
+    prompt = SYSTEM_PROMPT_EN + memory + "User:" + message.text + "\nGirl:"
 
     print("PROMPT: \n\n", prompt)
 
@@ -285,7 +158,7 @@ async def new_command(message: types.Message, state: FSMContext):
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             except:
                 pass
-            await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGanjar:" + "".join(buffer) + "\n")
+            await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGirl:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
                 voice="lhG8PEIXIoYq5B4mcb5L",
@@ -302,7 +175,7 @@ async def new_command(message: types.Message, state: FSMContext):
                 except:
                     pass
 
-    await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGanjar:" + "".join(buffer) + "\n")
+    await state.update_data(chat_memory=memory + "User:" +  message.text + "\nGirl:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
         voice="lhG8PEIXIoYq5B4mcb5L",
@@ -338,15 +211,8 @@ async def voice_handler(message: types.Message, state: FSMContext):
     lang = data.get("language", "english")
     memory = data.get("chat_memory", "")
 
-    if lang == "english":
-        message__ = await bot.send_message(message.chat.id, "📝 Ganjar is typing...")
-    elif lang == "indonesian":
-        message__ = await bot.send_message(message.chat.id, "📝 Ganjar sedang mengetik...")
-
-    if lang == "english":
-        prompt = SYSTEM_PROMPT_EN + memory + "User:" + segments[0].text + "\nGanjar:"
-    elif lang == "indonesian":
-        prompt = SYSTEM_PROMPT_ID + memory + "User:" + segments[0].text + "\nGanjar:"
+    message__ = await bot.send_message(message.chat.id, "📝 Eva is typing...")
+    prompt = SYSTEM_PROMPT_EN + memory + "User:" + segments[0].text + "\nGirl:"
 
     print("PROMPT: \n\n", prompt)
 
@@ -361,7 +227,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
                 await bot.edit_message_text("".join(buffer), message__.chat.id, message__.message_id)
             except:
                 pass
-            await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+            await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGirl:" + "".join(buffer) + "\n")
             audio = generate(
                 text="".join(buffer),
                 voice="lhG8PEIXIoYq5B4mcb5L",
@@ -378,7 +244,7 @@ async def voice_handler(message: types.Message, state: FSMContext):
                 except:
                     pass
 
-    await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGanjar:" + "".join(buffer) + "\n")
+    await state.update_data(chat_memory=memory + "User:" + segments[0].text + "\nGirl:" + "".join(buffer) + "\n")
     audio = generate(
         text="".join(buffer),
         voice="lhG8PEIXIoYq5B4mcb5L",
@@ -386,21 +252,6 @@ async def voice_handler(message: types.Message, state: FSMContext):
     )
 
     await bot.send_voice(message.chat.id, audio)
-
-
-
-@dp.callback_query_handler(lambda c: c.data in ["indonesian", "english"], state="*")
-async def process_callback(callback_query: types.CallbackQuery, state: FSMContext):
-    lang = callback_query.data
-    await state.update_data(language=lang)
-
-    message = callback_query.message
-
-    await bot.answer_callback_query(callback_query.id)
-    if lang == "english":
-        await bot.edit_message_text("🇺🇸 Language set to English", message.chat.id, message.message_id)
-    elif lang == "indonesian":
-        await bot.edit_message_text("🇮🇩 Bahasa diatur ke Bahasa Indonesia", message.chat.id, message.message_id)
 
 if __name__ == '__main__':
     from aiogram import executor
