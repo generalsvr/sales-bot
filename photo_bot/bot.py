@@ -12,6 +12,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sentence_transformers import SentenceTransformer
 from PIL import Image
+import time
 
 im_model = SentenceTransformer('clip-ViT-B-32')
 
@@ -55,14 +56,18 @@ async def handle_docs_photo(message: types.Message):
     
     print(photo.name)
 
+    start = time.time()
+
     # process photo
     pred = process_photo(photo.name)
 
+    pred_time = round(time.time() - start, 2)
+
     # send prediction
     if int(pred) == 1:
-        await message.reply(f"Prediction: ***True ✅***", parse_mode="Markdown")
+        await message.reply(f"Prediction: ***True ✅***\n\nВремя: {pred_time} с", parse_mode="Markdown")
     else:
-        await message.reply(f"Prediction: ***False ❌***", parse_mode="Markdown")
+        await message.reply(f"Prediction: ***False ❌***\n\nВремя: {pred_time} с", parse_mode="Markdown")
         
 
 if __name__ == '__main__':
