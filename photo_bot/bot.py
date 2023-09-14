@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 from PIL import Image
 import time
 
-im_model = SentenceTransformer('clip-ViT-B-16', device='cuda:0')
+im_model = SentenceTransformer('clip-ViT-L-14', device='cuda:0')
 
 def get_image_embeddings(img_name):
     img_emb = im_model.encode([Image.open(img_name)], convert_to_tensor=True)
