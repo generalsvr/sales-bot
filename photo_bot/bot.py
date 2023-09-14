@@ -53,10 +53,10 @@ async def handle_docs_photo(message: types.Message):
     # download photo
     photo = await photo.download()
     
-    print(photo)
+    print(photo.name)
 
     # process photo
-    pred = process_photo(photo)
+    pred = process_photo(photo.name)
 
     # send prediction
     await message.reply(f"Prediction: {pred}")
