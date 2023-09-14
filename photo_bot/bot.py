@@ -28,7 +28,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 def process_photo(photo):
     # load pickle 
-    clf = pickle.load(open("rf.pkl", "rb"))
+    clf = pickle.load(open("/model2.pkl", "rb"))
 
     # get embeddings
     img_emb = get_image_embeddings(photo)
