@@ -41,7 +41,7 @@ def process_photo(photo):
 # start command handler
 @dp.message_handler(Command("start"))
 async def start(message: types.Message):
-    await message.reply("Отправь фото")
+    await message.reply("Отправь фото\n\nКласс True - это уходит на глубокий анализ\nКласс False - пропускаем")
 
 
 # bot image handler
@@ -59,7 +59,11 @@ async def handle_docs_photo(message: types.Message):
     pred = process_photo(photo.name)
 
     # send prediction
-    await message.reply(f"Prediction: {pred}")
+    if int(pred) == 1:
+        await message.reply(f"Prediction: ***True ✅***", parse_mode="Markdown")
+    else:
+        await message.reply(f"Prediction: ***False ❌***", parse_mode="Markdown")
+        
 
 if __name__ == '__main__':
     from aiogram import executor
