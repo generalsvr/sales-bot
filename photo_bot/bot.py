@@ -19,7 +19,7 @@ def get_image_embeddings(img_name):
     img_emb = im_model.encode([Image.open(img_name)], convert_to_tensor=True)
     return img_emb.cpu()[0].numpy()
 
-BOT_TOKEN = "6440607788:AAGKXiEmguhZNv0rg6gS7qOktdiGr2a8S4k"
+BOT_TOKEN = "766919436:AAFaTfZicf4A-iRXuylOHq9xbqg6QQwfC34"
 
 bot = Bot(token=BOT_TOKEN) # sexting
 dp = Dispatcher(bot, storage=MemoryStorage())
