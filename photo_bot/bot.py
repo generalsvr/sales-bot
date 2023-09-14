@@ -65,9 +65,9 @@ async def handle_docs_photo(message: types.Message):
 
     # send prediction
     if int(pred) == 1:
-        await message.reply(f"Prediction: ***True ✅***\n\nВремя: {pred_time} с", parse_mode="Markdown")
-    else:
         await message.reply(f"Prediction: ***False ❌***\n\nВремя: {pred_time} с", parse_mode="Markdown")
+    else:
+        await message.reply(f"Prediction: ***True ✅***\n\nВремя: {pred_time} с", parse_mode="Markdown")
         
 
 if __name__ == '__main__':
