@@ -17,7 +17,11 @@ import time
 im_model = SentenceTransformer('clip-ViT-B-32', device='cuda:0')
 
 def get_image_embeddings(img_name):
-    img_emb = im_model.encode([Image.open(img_name)], convert_to_tensor=True)
+    # resize image
+    img = Image.open(img_name)
+    img = img.resize((224, 224))
+    
+    img_emb = im_model.encode([img], convert_to_tensor=True)
     return img_emb.cpu()[0].numpy()
 
 BOT_TOKEN = "766919436:AAFaTfZicf4A-iRXuylOHq9xbqg6QQwfC34"
