@@ -52,6 +52,8 @@ async def handle_docs_photo(message: types.Message):
 
     # download photo
     photo = await photo.download()
+    
+    print(photo)
 
     # process photo
     pred = process_photo(photo)
