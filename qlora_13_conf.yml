@@ -59,10 +59,17 @@ warmup_steps: 10
 eval_steps: 20
 save_steps: 50
 debug:
-deepspeed: deepspeed/zero3.json
+deepspeed:
 weight_decay: 0.0
+
 fsdp:
+  - full_shard
+  - auto_wrap
 fsdp_config:
+  fsdp_offload_params: true
+  fsdp_state_dict_type: FULL_STATE_DICT
+  fsdp_transformer_layer_cls_to_wrap: LlamaDecoderLayer
+
 special_tokens:
   bos_token: "<s>"
   eos_token: "</s>"
