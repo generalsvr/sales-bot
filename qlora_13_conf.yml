@@ -59,7 +59,7 @@ warmup_steps: 10
 eval_steps: 20
 save_steps: 50
 debug:
-deepspeed: deepspeed/zero3.json
+deepspeed:
 weight_decay: 0.0
 fsdp:
 fsdp_config:
