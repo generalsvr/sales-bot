@@ -57,7 +57,7 @@ flash_attention: true
 
 warmup_steps: 10
 eval_steps: 20
-save_steps:
+save_steps: 50
 debug:
 deepspeed: deepspeed/zero3.json
 weight_decay: 0.0
