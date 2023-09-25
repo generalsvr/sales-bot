@@ -12,6 +12,7 @@ datasets:
   - path: dataset.jsonl # or json
     ds_type: json # see other options below
     type: completion
+    
 dataset_prepared_path: last_run_prepared
 val_set_size: 0.01
 output_dir: ./lora-out
