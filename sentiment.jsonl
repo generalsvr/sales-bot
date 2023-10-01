@@ -505,15 +505,15 @@
 {"text" : "Text: Went to see the Broadway play last week. It was dull and monotonous, I walked out halfway.\nSentiment: negative\nTopics: ['Theater', 'Entertainment']\nEntities: ['Broadway']\nEmotions: ['Boredom']"}
 {"text" : "Text: My daughter got admission in Cambridge University. Over the moon with the news!\nSentiment: positive\nTopics: ['Education', 'Achievement']\nEntities: ['Cambridge University']\nEmotions: ['Joy', 'Pride']"}
 {"text" : "Text: Watching the sunset at Malibu Beach was a serene experience. It was a cacophony of beautiful colors.\nSentiment: positive\nTopics: ['Nature', 'Beauty']\nEntities: ['Malibu Beach']\nEmotions: ['Peace', 'Happiness']"}
-{"text" : "Text: The views from the Empire State Building were absolutely breathtaking.\nSentiment: positive\nTopics: ['Travel', 'Landmarks']\nEntities: ['Empire State Building']\nEmotions: ['Joy']",}
-{"text" : "Text: My dog's recent illness has really been scaring me.\nSentiment: negative\nTopics: ['Pets', 'Health']\nEntities: []\nEmotions: ['Fear']",}
-{"text" : "Text: My little sister's piano recital was way better than expected, proud of her!\nSentiment: positive\nTopics: ['Music', 'Family']\nEntities: []\nEmotions: ['Pride']",}
-{"text" : "Text: The train delay today really threw my entire schedule off.\nSentiment: negative\nTopics: ['Transportation']\nEntities: []\nEmotions: ['Annoyance']",}
-{"text" : "Text: The food at Joe's Diner is just tasteless and awful.\nSentiment: negative\nTopics: ['Food']\nEntities: ['Joe Diner']\nEmotions: ['Disgust']",}
-{"text" : "Text: Just read a fantastic book about Victorian England from the local library.\nSentiment: positive\nTopics: ['Books', 'History']\nEntities: ['Victorian England', 'Local library']\nEmotions: ['Excitement']",}
-{"text" : "Text: The service at the new Starbucks in town is exceptional.\nSentiment: positive\nTopics: ['Coffee', 'Service']\nEntities: ['Starbucks']\nEmotions: ['Happiness']",}
-{"text" : "Text: The weather this week has been so dreary and depressing.\nSentiment: negative\nTopics: ['Weather']\nEntities: []\nEmotions: ['Sadness']",}
-{"text" : "Text: The concert at Sulivan Park was extraordinarily energetic.\nSentiment: positive\nTopics: ['Music', 'Events']\nEntities: ['Sulivan Park']\nEmotions: ['Excitement']",}
+{"text" : "Text: The views from the Empire State Building were absolutely breathtaking.\nSentiment: positive\nTopics: ['Travel', 'Landmarks']\nEntities: ['Empire State Building']\nEmotions: ['Joy']"}
+{"text" : "Text: My dog's recent illness has really been scaring me.\nSentiment: negative\nTopics: ['Pets', 'Health']\nEntities: []\nEmotions: ['Fear']"}
+{"text" : "Text: My little sister's piano recital was way better than expected, proud of her!\nSentiment: positive\nTopics: ['Music', 'Family']\nEntities: []\nEmotions: ['Pride']"}
+{"text" : "Text: The train delay today really threw my entire schedule off.\nSentiment: negative\nTopics: ['Transportation']\nEntities: []\nEmotions: ['Annoyance']"}
+{"text" : "Text: The food at Joe's Diner is just tasteless and awful.\nSentiment: negative\nTopics: ['Food']\nEntities: ['Joe Diner']\nEmotions: ['Disgust']"}
+{"text" : "Text: Just read a fantastic book about Victorian England from the local library.\nSentiment: positive\nTopics: ['Books', 'History']\nEntities: ['Victorian England', 'Local library']\nEmotions: ['Excitement']"}
+{"text" : "Text: The service at the new Starbucks in town is exceptional.\nSentiment: positive\nTopics: ['Coffee', 'Service']\nEntities: ['Starbucks']\nEmotions: ['Happiness']"}
+{"text" : "Text: The weather this week has been so dreary and depressing.\nSentiment: negative\nTopics: ['Weather']\nEntities: []\nEmotions: ['Sadness']"}
+{"text" : "Text: The concert at Sulivan Park was extraordinarily energetic.\nSentiment: positive\nTopics: ['Music', 'Events']\nEntities: ['Sulivan Park']\nEmotions: ['Excitement']"}
 {"text" : "Text: The recent increase in gas prices is just unacceptable!\nSentiment: negative\nTopics: ['Economy']\nEntities: []\nEmotions: ['Anger']"}
 {"text" : "Text: Just finished reading 'To Kill a Mockingbird'. An emotional roller-coaster with a strong message. I am awe-struck.\nSentiment: positive\nTopics: ['Books', 'Literature']\nEntities: ['To Kill a Mockingbird']\nEmotions: ['Surprise', 'Admiration']"}
 {"text" : "Text: Visited the new shopping mall. It was crowded and noisy. Not a pleasant experience at all.\nSentiment: negative\nTopics: ['Shopping', 'Mall']\nEntities: []\nEmotions: ['Disgust', 'Annoyance']"}
